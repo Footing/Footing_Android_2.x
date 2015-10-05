@@ -22,15 +22,16 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.0.1'
-    //bmob-sdk £ºBmobµÄandroid sdk°ü
-    compile 'cn.bmob.android:bmob-sdk:3.4.3'
-    //bmob-push£ºBmobµÄÍÆËÍ°ü
+    //bmob-sdk ï¼šBmobçš„android sdkåŒ…
     compile 'cn.bmob.android:bmob-push:0.6'
-    //bmob-im£ºbmobµÄim°ü£¬ÒÔÏÂÁ½¸öÅäÖÃÊÇim¹¦ÄÜËùĞè
-    compile 'cn.bmob.android:bmob-im:1.1.9'
+    //bmob-imï¼šbmobçš„imåŒ…ï¼Œä»¥ä¸‹ä¸¤ä¸ªé…ç½®æ˜¯imåŠŸèƒ½æ‰€éœ€
+    //è¿™é‡Œå¯¼åŒ…é‡å¤äº†ï¼Œä½ çœ‹ä¸€ä¸‹æ€ä¹ˆè§£å†³â€¦â€¦
+    //compile 'cn.bmob.android:bmob-im:1.1.9'
     compile 'cn.bmob.android:bmob-sdk:3.4.3'
-    //okhttp£¨Ñ¡Ìî£©£ºÎª½â¾öÈõÍøÇé¿öÏÂSDKÇëÇóÊ§°Ü¼°ÏìÓ¦ÂıµÄÎÊÌâ£¬×Ô`V3.4.3°æ±¾`¿ªÊ¼Ê¹ÓÃ`okhttp`ÓÅ»¯SDKµÄÍøÂç¿ò¼Ü¡£
+    //okhttpï¼ˆé€‰å¡«ï¼‰ï¼šä¸ºè§£å†³å¼±ç½‘æƒ…å†µä¸‹SDKè¯·æ±‚å¤±è´¥åŠå“åº”æ…¢çš„é—®é¢˜ï¼Œè‡ª`V3.4.3ç‰ˆæœ¬`å¼€å§‹ä½¿ç”¨`okhttp`ä¼˜åŒ–SDKçš„ç½‘ç»œæ¡†æ¶ã€‚
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.squareup.okio:okio:1.4.0'
+
+    compile 'com.jakewharton:butterknife:6.1.0'
 
 }

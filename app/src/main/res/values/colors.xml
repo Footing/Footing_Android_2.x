@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#fff</color>
+    <color name="black">#000</color>
+    <!--文本颜色-->
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <!--主题色-->
+    <color name="primary_color">#fb6582</color>
+    <color name="primary_dark_color">#c44f65</color>
+</resources>

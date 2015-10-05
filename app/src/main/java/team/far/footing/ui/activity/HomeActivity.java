@@ -1,18 +1,42 @@
 package team.far.footing.ui.activity;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import team.far.footing.R;
 
 public class HomeActivity extends AppCompatActivity {
+
+    @InjectView(R.id.toolbar)
+    Toolbar mToolbar;
+    @InjectView(R.id.tv_hello)
+    TextView tvHello;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        ButterKnife.inject(this);
+
+        initToolbar();
+        initFonts();
+    }
+
+    private void initFonts() {
+        Typeface robotoLight = Typeface.createFromAsset(getAssets(),"fonts/Roboto-Light.ttf");
+        tvHello.setTypeface(robotoLight);
+    }
+
+    private void initToolbar() {
+        mToolbar.setTitle(getResources().getString(R.string.app_name));
+        setSupportActionBar(mToolbar);
     }
 
     @Override
