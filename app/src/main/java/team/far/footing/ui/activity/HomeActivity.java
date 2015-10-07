@@ -2,7 +2,6 @@ package team.far.footing.ui.activity;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,8 +10,13 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import team.far.footing.R;
+import team.far.footing.app.BaseActivity;
+import team.far.footing.model.bean.Userbean;
+import team.far.footing.model.callback.OnUserListener;
+import team.far.footing.model.impl.UserModel;
+import team.far.footing.uitl.LogUtils;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
 
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
