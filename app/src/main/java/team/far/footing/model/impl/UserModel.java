@@ -1,7 +1,5 @@
 package team.far.footing.model.impl;
 
-import android.widget.ShareActionProvider;
-
 import java.util.HashMap;
 
 import cn.bmob.v3.BmobUser;
@@ -11,30 +9,34 @@ import cn.smssdk.SMSSDK;
 import cn.smssdk.gui.RegisterPage;
 import team.far.footing.app.APP;
 import team.far.footing.model.IUserModel;
+import team.far.footing.model.bean.UserInfo;
 import team.far.footing.model.bean.Userbean;
+import team.far.footing.model.callback.OnLoginListener;
 import team.far.footing.model.callback.OnSMSListener;
 import team.far.footing.model.callback.OnUserListener;
+import team.far.footing.uitl.BmobUtils;
 import team.far.footing.uitl.LogUtils;
-
-import static team.far.footing.app.APP.getContext;
 
 /**
  * Created by moi on 15/10/2.
  */
 public class UserModel implements IUserModel {
+
     @Override
-    public void login(OnUserListener onUserListener) {
-        sendSMS(new OnSMSListener() {
+    public void loginGetCode(String phonenumber, final OnLoginListener onLoginListener) {
+        EventHandler eh = new EventHandler() {
             @Override
-            public void success(String country, String phone) {
-
+            public void afterEvent(int event, int result, Object data) {
+                onLoginListener.afterEvent(event, result);
             }
+        };
+        SMSSDK.registerEventHandler(eh); //注册短信回调
+        SMSSDK.getVerificationCode("86", phonenumber);
+    }
 
-            @Override
-            public void failed() {
-
-            }
-        });
+    @Override
+    public void loginVerifyCode(String phonenumber, String code) {
+        SMSSDK.submitVerificationCode("86", phonenumber, code);
     }
 
     @Override
@@ -42,7 +44,7 @@ public class UserModel implements IUserModel {
         sendSMS(new OnSMSListener() {
             @Override
             public void success(String country, String phone) {
-                Userbean userbean = new Userbean();
+                final Userbean userbean = new Userbean();
                 userbean.setUsername(phone);
                 userbean.setPassword(phone);
                 userbean.setMobilePhoneNumber(phone);
@@ -50,8 +52,22 @@ public class UserModel implements IUserModel {
                     @Override
                     public void onSuccess() {
                         LogUtils.e("注册成功");
-                        onUserListener.Success(BmobUser.getCurrentUser(APP.getContext(), Userbean.class));
+                        UserInfo userInfo = new UserInfo();
+                        userInfo.setUserbean(BmobUtils.getCurrentUser());
+                        userInfo.save(APP.getContext(), new SaveListener() {
+                            @Override
+                            public void onSuccess() {
+                                onUserListener.Success(BmobUtils.getCurrentUser());
+                            }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+                                LogUtils.e("注册失败" + s + i);
+                                onUserListener.Failed(i, s);
+                            }
+                        });
                     }
+
                     @Override
                     public void onFailure(int i, String s) {
                         LogUtils.e("注册失败" + s + i);
@@ -69,7 +85,7 @@ public class UserModel implements IUserModel {
 
     @Override
     public void logout(OnUserListener onUserListener) {
-
+        BmobUser.logOut(APP.getContext());
     }
 
     private void sendSMS(final OnSMSListener onSMSListener) {
@@ -93,4 +109,5 @@ public class UserModel implements IUserModel {
         });
         registerPage.show(APP.getContext());
     }
+
 }

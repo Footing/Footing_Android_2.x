@@ -7,4 +7,13 @@ import cn.bmob.v3.BmobObject;
  */
 public class UserInfo extends BmobObject {
 
+    private Userbean userbean;
+
+    public Userbean getUserbean() {
+        return userbean;
+    }
+
+    public void setUserbean(Userbean userbean) {
+        this.userbean = userbean;
+    }
 }
