@@ -3,6 +3,7 @@ package team.far.footing.ui.activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -11,9 +12,12 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import team.far.footing.R;
 import team.far.footing.app.BaseActivity;
+import team.far.footing.model.bean.UserInfo;
 import team.far.footing.model.bean.Userbean;
+import team.far.footing.model.callback.OnUserInfoListener;
 import team.far.footing.model.callback.OnUserListener;
 import team.far.footing.model.impl.UserModel;
+import team.far.footing.uitl.BmobUtils;
 import team.far.footing.uitl.LogUtils;
 
 public class HomeActivity extends BaseActivity {
@@ -31,6 +35,28 @@ public class HomeActivity extends BaseActivity {
 
         initToolbar();
         initFonts();
+
+        new  UserModel().register(new OnUserListener() {
+            @Override
+            public void Success(Userbean userbean) {
+                BmobUtils.getCurrentUserInfo(new OnUserInfoListener() {
+                    @Override
+                    public void Success(UserInfo userInfo) {
+                        Log.e(userInfo.getFriendId(),"=============>>>>>>>>>>");
+                    }
+
+                    @Override
+                    public void Failed(int i, String reason) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void Failed(int i, String reason) {
+
+            }
+        });
     }
 
     private void initFonts() {

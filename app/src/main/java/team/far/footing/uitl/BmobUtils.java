@@ -1,8 +1,14 @@
 package team.far.footing.uitl;
 
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.FindListener;
 import team.far.footing.app.APP;
+import team.far.footing.model.bean.UserInfo;
 import team.far.footing.model.bean.Userbean;
+import team.far.footing.model.callback.OnUserInfoListener;
 
 /**
  * Created by Luoyy on 2015/8/8 0008.
@@ -15,6 +21,27 @@ public class BmobUtils {
      */
     public static Userbean getCurrentUser() {
         return BmobUser.getCurrentUser(APP.getContext(), Userbean.class);
+    }
+
+
+    public static void getCurrentUserInfo(final OnUserInfoListener onUserInfoListener) {
+        Userbean currentuser = getCurrentUser();
+        BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
+        query.addWhereEqualTo("userbean", currentuser);
+        query.include("userbean");
+        query.findObjects(APP.getContext(), new FindListener<UserInfo>() {
+            @Override
+            public void onSuccess(List<UserInfo> object) {
+                // TODO Auto-generated method stub
+                onUserInfoListener.Success(object.get(0));
+            }
+
+            @Override
+            public void onError(int code, String msg) {
+                // TODO Auto-generated method stub
+                onUserInfoListener.Failed(code, msg);
+            }
+        });
 
     }
 
