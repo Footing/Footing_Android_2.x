@@ -19,6 +19,7 @@ import cn.smssdk.gui.RegisterPage;
 import team.far.footing.app.APP;
 import team.far.footing.model.IUserModel;
 import team.far.footing.model.bean.Friends;
+import team.far.footing.model.bean.MessageCenter;
 import team.far.footing.model.bean.UserInfo;
 import team.far.footing.model.bean.Userbean;
 import team.far.footing.model.callback.OnLoginListener;
@@ -67,6 +68,8 @@ public class UserModel implements IUserModel {
         sendSMS(new OnSMSListener() {
             @Override
             public void success(String country, final String phone) {
+
+
                 final Userbean userbean = new Userbean();
                 userbean.setUsername(phone);
                 userbean.setPassword(phone);
@@ -80,14 +83,29 @@ public class UserModel implements IUserModel {
                         friends.save(APP.getContext(), new SaveListener() {
                             @Override
                             public void onSuccess() {
-                                UserInfo userInfo = new UserInfo();
+                                final UserInfo userInfo = new UserInfo();
                                 userInfo.setUsername(phone);
                                 userInfo.setFriendId(friends.getObjectId());
                                 userInfo.setUserbean(BmobUtils.getCurrentUser());
                                 userInfo.save(APP.getContext(), new SaveListener() {
                                     @Override
                                     public void onSuccess() {
-                                        onUserListener.Success();
+                                        final MessageCenter messageCenter = new MessageCenter();
+                                        messageCenter.setUserInfo(userInfo);
+                                        messageCenter.save(APP.getContext(), new SaveListener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                userInfo.setMessageCenterId(messageCenter.getObjectId());
+                                                userInfo.save(APP.getContext());
+                                                onUserListener.Success();
+                                            }
+
+                                            @Override
+                                            public void onFailure(int i, String s) {
+
+                                            }
+                                        });
+
                                     }
 
                                     @Override

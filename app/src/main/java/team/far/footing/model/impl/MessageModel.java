@@ -9,6 +9,7 @@ import cn.bmob.v3.BmobRealTimeData;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.DeleteListener;
+import cn.bmob.v3.listener.FindCallback;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
@@ -16,6 +17,7 @@ import cn.bmob.v3.listener.ValueEventListener;
 import team.far.footing.app.APP;
 import team.far.footing.model.IMessageModel;
 import team.far.footing.model.bean.MessageBean;
+import team.far.footing.model.bean.MessageCenter;
 import team.far.footing.model.bean.UserInfo;
 import team.far.footing.model.callback.OnDateChangeListener;
 import team.far.footing.model.callback.OnUserInfoListener;
@@ -40,14 +42,14 @@ public class MessageModel implements IMessageModel {
     @Override
     public void startListener(final OnDateChangeListener onDateChangeListener) {
         final BmobRealTimeData rtd = new BmobRealTimeData();
-        rtd.start(APP.getContext(), new ValueEventListener() {
+
+        //上个版本的错误--->>暂时不删
+        /*rtd.start(APP.getContext(), new ValueEventListener() {
             @Override
             public void onConnectCompleted() {
-                //对当前用户对应的好友表中的自己那行进行监听
                 rtd.subRowUpdate("_User", BmobUtils.getCurrentUser().getObjectId());
                 onDateChangeListener.onConnectCompleted();
             }
-
             @Override
             public void onDataChange(final JSONObject jsonObject) {
 
@@ -62,10 +64,44 @@ public class MessageModel implements IMessageModel {
                         onDateChangeListener.onError(i, s);
                     }
                 });
+            }
+        });*/
 
+        BmobUtils.getCurrentUserInfo(new OnUserInfoListener() {
+            @Override
+            public void Success(final UserInfo userInfo) {
+                rtd.start(APP.getContext(), new ValueEventListener() {
+                    @Override
+                    public void onConnectCompleted() {
+                        rtd.subRowUpdate("MessageCenter", userInfo.getMessageCenterId());
+                        onDateChangeListener.onConnectCompleted();
+                    }
+
+                    @Override
+                    public void onDataChange(JSONObject jsonObject) {
+
+                        getAllMessage(new FindListener<MessageBean>() {
+                            @Override
+                            public void onSuccess(List<MessageBean> list) {
+                                onDateChangeListener.onDataChange(list);
+                            }
+
+                            @Override
+                            public void onError(int i, String s) {
+                                onDateChangeListener.onError(i, s);
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void Failed(int i, String reason) {
 
             }
         });
+
+
     }
 
     @Override
@@ -116,7 +152,6 @@ public class MessageModel implements IMessageModel {
 
             @Override
             public void Failed(int i, String reason) {
-
             }
         });
 
@@ -124,8 +159,31 @@ public class MessageModel implements IMessageModel {
     }
 
     @Override
-    public void AddMessage(UserInfo userInfo, MessageBean messageBean, final OnUserListener onUserListener) {
-        BmobRelation bmobRelation = new BmobRelation();
+    public void AddMessage(UserInfo userInfo, final MessageBean messageBean, final OnUserListener onUserListener) {
+
+
+        BmobQuery<MessageCenter> query = new BmobQuery<MessageCenter>();
+        query.addWhereEqualTo("userInfo", userInfo);
+        query.include("userInfo");
+        query.findObjects(APP.getContext(), new FindListener<MessageCenter>() {
+            @Override
+            public void onSuccess(List<MessageCenter> list) {
+                MessageCenter messageCenter = list.get(0);
+                if (messageCenter != null) {
+                    messageCenter.setMessageBean(messageBean);
+                    messageCenter.save(APP.getContext());
+                } else throw new NullPointerException();
+            }
+
+            @Override
+            public void onError(int i, String s) {
+            }
+        });
+
+
+        //暂时保留,测试后再删除
+        //上个版本的错误--->>暂时不删
+        final BmobRelation bmobRelation = new BmobRelation();
         bmobRelation.add(messageBean);
         userInfo.setMessages(bmobRelation);
         userInfo.update(APP.getContext(), new UpdateListener() {
@@ -139,13 +197,26 @@ public class MessageModel implements IMessageModel {
                 if (onUserListener != null) onUserListener.Failed(i, s);
             }
         });
+
+
     }
 
     @Override
-    public void getAllMessage(FindListener<MessageBean> findListener) {
-        BmobQuery<MessageBean> query = new BmobQuery<MessageBean>();
-        query.addWhereRelatedTo("messages", new BmobPointer(BmobUtils.getCurrentUser()));
-        query.findObjects(APP.getContext(), findListener);
+    public void getAllMessage(final FindListener<MessageBean> findListener) {
+        BmobUtils.getCurrentUserInfo(new OnUserInfoListener() {
+            @Override
+            public void Success(UserInfo userInfo) {
+                BmobQuery<MessageBean> query = new BmobQuery<MessageBean>();
+                query.addWhereRelatedTo("getuser", new BmobPointer(userInfo));
+                query.findObjects(APP.getContext(), findListener);
+            }
+
+            @Override
+            public void Failed(int i, String reason) {
+                throw new RuntimeException("获取数据出错！！！");
+            }
+        });
+
     }
 
 

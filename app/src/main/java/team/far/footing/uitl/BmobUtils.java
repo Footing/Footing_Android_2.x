@@ -16,6 +16,9 @@ import team.far.footing.model.callback.OnUserInfoListener;
 public class BmobUtils {
 
 
+    public static UserInfo userInfo = null;
+
+
     /**
      * @return 需要在登陆后才可以调用
      */
@@ -25,24 +28,29 @@ public class BmobUtils {
 
 
     public static void getCurrentUserInfo(final OnUserInfoListener onUserInfoListener) {
-        Userbean currentuser = getCurrentUser();
-        BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
-        query.addWhereEqualTo("userbean", currentuser);
-        query.include("userbean");
-        query.findObjects(APP.getContext(), new FindListener<UserInfo>() {
-            @Override
-            public void onSuccess(List<UserInfo> object) {
-                // TODO Auto-generated method stub
-                onUserInfoListener.Success(object.get(0));
-            }
+        if (userInfo == null) {
 
-            @Override
-            public void onError(int code, String msg) {
-                // TODO Auto-generated method stub
-                onUserInfoListener.Failed(code, msg);
-            }
-        });
+            Userbean currentuser = getCurrentUser();
+            BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
+            query.addWhereEqualTo("userbean", currentuser);
+            query.include("userbean");
+            query.findObjects(APP.getContext(), new FindListener<UserInfo>() {
+                @Override
+                public void onSuccess(List<UserInfo> object) {
+                    // TODO Auto-generated method stub
+                    userInfo = object.get(0);
+                    onUserInfoListener.Success(object.get(0));
+                }
 
+                @Override
+                public void onError(int code, String msg) {
+                    // TODO Auto-generated method stub
+                    onUserInfoListener.Failed(code, msg);
+                }
+            });
+        } else {
+            onUserInfoListener.Success(userInfo);
+        }
     }
 
     /**

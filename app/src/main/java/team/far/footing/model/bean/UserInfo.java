@@ -45,6 +45,18 @@ public class UserInfo extends BmobObject {
     private Userbean userbean;
 
     //消息
+    private BmobRelation messages;
+    //消息中心 id
+
+    public String getMessageCenterId() {
+        return MessageCenterId;
+    }
+
+    public void setMessageCenterId(String messageCenterId) {
+        MessageCenterId = messageCenterId;
+    }
+
+    private  String MessageCenterId;
 
     public BmobRelation getMessages() {
         return messages;
@@ -54,7 +66,6 @@ public class UserInfo extends BmobObject {
         this.messages = messages;
     }
 
-    private BmobRelation messages;
 
 
     public String getFriendId() {

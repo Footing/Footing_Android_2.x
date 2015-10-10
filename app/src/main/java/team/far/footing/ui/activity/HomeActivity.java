@@ -36,27 +36,7 @@ public class HomeActivity extends BaseActivity {
         initToolbar();
         initFonts();
 
-        new  UserModel().register(new OnUserListener() {
-            @Override
-            public void Success(Userbean userbean) {
-                BmobUtils.getCurrentUserInfo(new OnUserInfoListener() {
-                    @Override
-                    public void Success(UserInfo userInfo) {
-                        Log.e(userInfo.getFriendId(),"=============>>>>>>>>>>");
-                    }
 
-                    @Override
-                    public void Failed(int i, String reason) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void Failed(int i, String reason) {
-
-            }
-        });
     }
 
     private void initFonts() {
