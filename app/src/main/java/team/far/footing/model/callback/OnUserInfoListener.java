@@ -1,5 +1,7 @@
 package team.far.footing.model.callback;
 
+import android.accounts.NetworkErrorException;
+
 import team.far.footing.model.bean.UserInfo;
 
 /**
@@ -9,6 +11,6 @@ public interface OnUserInfoListener {
 
     void Success(UserInfo userInfo);
 
-    void Failed(int i, String reason);
+    void Failed(int i, String reason) throws NetworkErrorException;
 
 }

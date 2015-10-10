@@ -42,8 +42,10 @@ public interface IFriendModel {
     /**
      * @param userInfo       ------------需要添加的Userbean
      * @param onUserListener ---------------更新用户数据的监听器
+     *                       <p>
+     *                       加好友只是向对方发送了一条消息--->>> 验证
      */
-    void addFriend(UserInfo userInfo, OnUserListener onUserListener);
+    void SendFriendMsg(UserInfo userInfo, String string, OnUserListener onUserListener);
 
     /**
      * ##查询当前用户已经添加了的好友 list
@@ -75,4 +77,11 @@ public interface IFriendModel {
      * @param onIsMyFriendListener
      */
     void isMyFriendByNickname(String username, OnIsMyFriendListener onIsMyFriendListener);
+
+
+    /**
+     * @param userInfo
+     * @param onUserListener 注意：这里再验证后直接调用，双向加好友（应该是验证消息的那个用户调用）
+     */
+    void addFriend(UserInfo userInfo, OnUserListener onUserListener);
 }

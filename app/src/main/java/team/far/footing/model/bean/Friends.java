@@ -9,7 +9,7 @@ import cn.bmob.v3.datatype.BmobRelation;
 public class Friends extends BmobObject {
 
     private BmobRelation friends;
-    private Userbean userbean;
+    private UserInfo userInfo;
     private String username;
 
     public String getUsername() {
@@ -20,12 +20,12 @@ public class Friends extends BmobObject {
         this.username = username;
     }
 
-    public Userbean getUserbean() {
-        return userbean;
+    public UserInfo getUserbean() {
+        return userInfo;
     }
 
-    public void setUserbean(Userbean userbean) {
-        this.userbean = userbean;
+    public void setUserbean(UserInfo userbean) {
+        this.userInfo = userbean;
     }
 
     public BmobRelation getFriends() {

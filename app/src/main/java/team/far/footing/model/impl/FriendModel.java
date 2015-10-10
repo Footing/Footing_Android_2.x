@@ -1,17 +1,24 @@
 package team.far.footing.model.impl;
 
+import android.accounts.NetworkErrorException;
+
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.datatype.BmobPointer;
+import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 import team.far.footing.app.APP;
 import team.far.footing.model.IFriendModel;
 import team.far.footing.model.bean.Friends;
 import team.far.footing.model.bean.UserInfo;
+import team.far.footing.model.bean.Userbean;
 import team.far.footing.model.callback.OnIsMyFriendListener;
 import team.far.footing.model.callback.OnQueryFriendListener;
+import team.far.footing.model.callback.OnUserInfoListener;
 import team.far.footing.model.callback.OnUserListener;
+import team.far.footing.uitl.BmobUtils;
 import team.far.footing.uitl.LogUtils;
 
 /**
@@ -25,30 +32,126 @@ public class FriendModel implements IFriendModel {
         return instance;
     }
 
+    private MessageModel messageModel;
+
+
     private FriendModel() {
 
+        messageModel = MessageModel.getInstance();
+    }
+
+    @Override
+    public void addFriend(final UserInfo userInfo, final OnUserListener onUserListener) {
+        //把其他人加为好友
+        BmobUtils.getCurrentUserInfo(new OnUserInfoListener() {
+            @Override
+            public void Success(UserInfo userInfoo) {
+                final Friends friends = new Friends();
+                friends.setObjectId(userInfoo.getFriendId());
+                friends.setUserbean(userInfoo);
+                BmobRelation bmobRelation = new BmobRelation();
+                bmobRelation.add(userInfo);
+                friends.setFriends(bmobRelation);
+
+                //其他人把你加为好友
+                final Friends friends1 = new Friends();
+                friends1.setObjectId(userInfo.getFriendId());
+                friends1.setUserbean(userInfo);
+                BmobRelation bmobRelation1 = new BmobRelation();
+                bmobRelation1.add(userInfoo);
+                friends1.setFriends(bmobRelation1);
+
+                MessageModel.getInstance().sendMssageToUser(userInfo, "系统消息", userInfoo.getNickName() + " 加你为好友了。", null);
+                update_friend(friends, friends1, onUserListener);
+            }
+
+            @Override
+            public void Failed(int i, String reason) throws NetworkErrorException {
+
+            }
+        });
+
+
 
     }
 
-
     @Override
-    public void addFriend(UserInfo userInfo, final OnUserListener onUserListener) {
+    public void SendFriendMsg(UserInfo userInfo, String text, final OnUserListener onUserListener) {
+        messageModel.sendMssageToUser(userInfo, text, "addFriend", new OnUserListener() {
+            @Override
+            public void Success() {
+                onUserListener.Success();
+            }
 
+            @Override
+            public void Failed(int i, String reason) {
+                onUserListener.Failed(i, reason);
+            }
+        });
 
     }
-    @Override
-    public void deleteFriend(UserInfo userInfo, final OnUserListener onUserListener) {
 
+    @Override
+    public void deleteFriend(final UserInfo userInfo, final OnUserListener onUserListener) {
+        BmobUtils.getCurrentUserInfo(new OnUserInfoListener() {
+            @Override
+            public void Success(UserInfo userInfoo) {
+                Friends friends = new Friends();
+                friends.setObjectId(userInfoo.getFriendId());
+                friends.setUserbean(userInfoo);
+                BmobRelation bmobRelation = new BmobRelation();
+                bmobRelation.remove(userInfo);
+                friends.setFriends(bmobRelation);
+
+                Friends friends1 = new Friends();
+                friends1.setObjectId(userInfo.getFriendId());
+                friends1.setUserbean(userInfo);
+                BmobRelation bmobRelation1 = new BmobRelation();
+                bmobRelation1.remove(userInfoo);
+                friends1.setFriends(bmobRelation1);
+
+
+                update_friend(friends, friends1, onUserListener);
+            }
+
+            @Override
+            public void Failed(int i, String reason) throws NetworkErrorException {
+                throw new NetworkErrorException("网络请求错误！！！");
+            }
+        });
     }
 
     @Override
     public void getAllFriends(final OnQueryFriendListener onQueryFriendListener) {
+        final BmobQuery<UserInfo> query = new BmobQuery<>();
+        final Friends friends = new Friends();
+        BmobUtils.getCurrentUserInfo(new OnUserInfoListener() {
+            @Override
+            public void Success(UserInfo userInfo) {
+                friends.setObjectId(userInfo.getFriendId());
+                query.addWhereRelatedTo("friends", new BmobPointer(friends));
+                query.findObjects(APP.getContext(), new FindListener<UserInfo>() {
+                            @Override
+                            public void onSuccess(final List<UserInfo> list) {
+                                onQueryFriendListener.onSuccess(list);
+                            }
+
+                            @Override
+                            public void onError(int i, String s) {
+                                onQueryFriendListener.onError(i, s);
+                            }
+                        }
+                );
+            }
+
+            @Override
+            public void Failed(int i, String reason) throws NetworkErrorException {
+                throw new NetworkErrorException("网络请求错误!!!");
+            }
+        });
 
 
     }
-
-
-
 
 
     @Override
@@ -98,6 +201,7 @@ public class FriendModel implements IFriendModel {
         });
     }
 
+
     @Override
     public void isMyFriendByUsername(final String username, final OnIsMyFriendListener onIsMyFriendListener) {
         getAllFriends(new OnQueryFriendListener() {
@@ -121,6 +225,7 @@ public class FriendModel implements IFriendModel {
     }
 
 
+    //双方的好友表确定好后的保存
     private void update_friend(Friends friend_1, final Friends friends_2, final OnUserListener onUserListener) {
 
         friend_1.update(APP.getContext(), new UpdateListener() {
