@@ -1,5 +1,7 @@
 package team.far.footing.uitl;
 
+import android.accounts.NetworkErrorException;
+
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -45,7 +47,11 @@ public class BmobUtils {
                 @Override
                 public void onError(int code, String msg) {
                     // TODO Auto-generated method stub
-                    onUserInfoListener.Failed(code, msg);
+                    try {
+                        onUserInfoListener.Failed(code, msg);
+                    } catch (NetworkErrorException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         } else {
