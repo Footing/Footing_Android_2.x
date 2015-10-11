@@ -1,5 +1,7 @@
 package team.far.footing.model.impl;
 
+import android.accounts.NetworkErrorException;
+
 import com.bmob.BTPFileResponse;
 import com.bmob.BmobProFile;
 import com.bmob.btp.callback.UploadListener;
@@ -79,33 +81,45 @@ public class UserModel implements IUserModel {
                     public void onSuccess() {
                         final Friends friends = new Friends();
                         friends.setUsername(phone);
-                        friends.setUserbean(BmobUtils.getCurrentUser());
-                        friends.save(APP.getContext(), new SaveListener() {
+                        BmobUtils.getCurrentUserInfo(new OnUserInfoListener() {
                             @Override
-                            public void onSuccess() {
-                                final UserInfo userInfo = new UserInfo();
-                                userInfo.setUsername(phone);
-                                userInfo.setFriendId(friends.getObjectId());
-                                userInfo.setUserbean(BmobUtils.getCurrentUser());
-                                userInfo.save(APP.getContext(), new SaveListener() {
+                            public void Success(UserInfo userInfo) {
+
+                                friends.setUserbean(userInfo);
+                                friends.save(APP.getContext(), new SaveListener() {
                                     @Override
                                     public void onSuccess() {
-                                        final MessageCenter messageCenter = new MessageCenter();
-                                        messageCenter.setUserInfo(userInfo);
-                                        messageCenter.save(APP.getContext(), new SaveListener() {
+                                        final UserInfo userInfo = new UserInfo();
+                                        userInfo.setUsername(phone);
+                                        userInfo.setFriendId(friends.getObjectId());
+                                        userInfo.setUserbean(BmobUtils.getCurrentUser());
+                                        userInfo.save(APP.getContext(), new SaveListener() {
                                             @Override
                                             public void onSuccess() {
-                                                userInfo.setMessageCenterId(messageCenter.getObjectId());
-                                                userInfo.save(APP.getContext());
-                                                onUserListener.Success();
+                                                final MessageCenter messageCenter = new MessageCenter();
+                                                messageCenter.setUserInfo(userInfo);
+                                                messageCenter.save(APP.getContext(), new SaveListener() {
+                                                    @Override
+                                                    public void onSuccess() {
+                                                        userInfo.setMessageCenterId(messageCenter.getObjectId());
+                                                        userInfo.save(APP.getContext());
+                                                        onUserListener.Success();
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(int i, String s) {
+
+                                                    }
+                                                });
+
                                             }
 
                                             @Override
                                             public void onFailure(int i, String s) {
-
+                                                LogUtils.e("注册失败" + s + i);
+                                                onUserListener.Failed(i, s);
                                             }
                                         });
-
                                     }
 
                                     @Override
@@ -117,11 +131,11 @@ public class UserModel implements IUserModel {
                             }
 
                             @Override
-                            public void onFailure(int i, String s) {
-                                LogUtils.e("注册失败" + s + i);
-                                onUserListener.Failed(i, s);
+                            public void Failed(int i, String reason) throws NetworkErrorException {
+
                             }
                         });
+
                     }
 
                     @Override
