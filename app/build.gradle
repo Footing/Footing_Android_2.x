@@ -33,4 +33,5 @@ dependencies {
     //友盟
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile project(':sMSSDK')
+    compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
 }
