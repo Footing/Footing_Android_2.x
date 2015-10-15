@@ -15,16 +15,14 @@ public interface IMessageModel {
     /**
      * 删除msg
      *
-     * @param messageBean
+     * @param username
      */
-    void deleteMsg(MessageBean messageBean, final OnUserListener onUserListener);
+    void deleteMsg(String username, final OnUserListener onUserListener);
 
     /**
      * 把msg标记为 已读
      */
     void makeMsgReaded(MessageBean messageBean);
-
-
     /**
      * 给用户发送消息
      *
@@ -33,7 +31,6 @@ public interface IMessageModel {
      */
     void sendMssageToUser(UserInfo userInfo, String messager, String Content, OnUserListener onUserListener);
 
-
     /**
      * 得到当前用户的所有 message
      *
@@ -41,12 +38,5 @@ public interface IMessageModel {
      */
     void getAllMessage(FindListener<MessageBean> findListener);
 
-    /**
-     * 给指定的  userbean 添加一条消息
-     *
-     * @param userInfo
-     * @param messageBean
-     */
-    void AddMessage(UserInfo userInfo, MessageBean messageBean, OnUserListener onUserListener);
 
 }

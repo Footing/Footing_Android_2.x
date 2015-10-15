@@ -8,6 +8,8 @@ import team.far.footing2.model.callback.OnUserListener;
  * Created by moi on 15/10/2.
  */
 public interface IUserModel {
+
+
     /**
      * 发起请求获取验证码
      *
@@ -21,6 +23,12 @@ public interface IUserModel {
      *
      * @param phonenumber ----手机号
      * @param code        ----验证码
+     *                    <p/>
+     *                    抱歉这里没有写好；
+     *                    在调用过 loginGetCode（）后，里面的监控器会监控该方法调用过后的验证
+     *                    及是：loginVerifyCode（）方法才会触动上面的监听器
+     *                    上面的 loginGetCode 只是获取验证码，下面的这个方法才是验证
+     *                    但是验证的结果又是在上面的监听器中触发的。 - --->>> 没办法
      */
     void loginVerifyCode(String phonenumber, String code);
 
@@ -29,6 +37,8 @@ public interface IUserModel {
      *
      * @param onUserListener 注意：===============>>>>>>
      *                       在注册一个用户的时候，就给当前用户加了一个userInfo表和一个friends表
+     *                       <p/>
+     *                       会调回来在子线程
      */
     void register(OnUserListener onUserListener);
 
@@ -48,13 +58,11 @@ public interface IUserModel {
      * @param onUserListener ------------更新用户数据的监听器
      */
     void updateUser_level(int level, OnUserListener onUserListener);
-
     /**
      * @param nickname       ------------昵称
      * @param onUserListener --------------更新用户数据的监听器
      */
     void update_NickName(String nickname, OnUserListener onUserListener);
-
     /**
      * @param PraiseCount    ----------点赞次数
      * @param onUserListener -----------更新用户数据的监听器

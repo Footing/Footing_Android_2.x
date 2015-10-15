@@ -9,9 +9,6 @@ import cn.bmob.v3.datatype.BmobRelation;
 public class UserInfo extends BmobObject {
 
 
-
-
-
     //用于保存 一个用户对应一个Friends中的objectId
     private String FriendId;
     //昵称
@@ -32,21 +29,17 @@ public class UserInfo extends BmobObject {
     private Integer all_distance;
     //今日任务完成没  0表示未完成  1表示完成。
     private Integer is_finish_today;
-
     //  0表示不是第三方登陆  1 为第三方登陆
     private Integer isAuth;
-
     //  表示今日
     private String today_date;
-
     //用户名
     private String username;
-
     private Userbean userbean;
-
     //消息
     private BmobRelation messages;
     //消息中心 id
+    private String MessageCenterId;
 
     public String getMessageCenterId() {
         return MessageCenterId;
@@ -56,8 +49,6 @@ public class UserInfo extends BmobObject {
         MessageCenterId = messageCenterId;
     }
 
-    private  String MessageCenterId;
-
     public BmobRelation getMessages() {
         return messages;
     }
@@ -65,7 +56,6 @@ public class UserInfo extends BmobObject {
     public void setMessages(BmobRelation messages) {
         this.messages = messages;
     }
-
 
 
     public String getFriendId() {
@@ -171,7 +161,6 @@ public class UserInfo extends BmobObject {
     public void setToday_date(String today_date) {
         this.today_date = today_date;
     }
-
 
 
     public Userbean getUserbean() {

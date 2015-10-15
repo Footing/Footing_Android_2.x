@@ -1,17 +1,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
-    <include layout="@layout/layout_toolbar"/>
+    <include layout="@layout/layout_toolbar" />
 
     <TextView
         android:id="@+id/tv_hello"
-        android:textColor="@color/primary_color"
-        android:textSize="@dimen/super_text_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="@string/hello_world"
-        android:layout_width="wrap_content"
+        android:textColor="@color/primary_color"
+        android:textSize="@dimen/super_text_size" />
+
+
+    <EditText
+        android:gravity="center"
+        android:id="@+id/edit"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:gravity="center"
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="确定" />
 </RelativeLayout>

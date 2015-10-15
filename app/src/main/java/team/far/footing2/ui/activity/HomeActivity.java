@@ -5,12 +5,25 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.bmob.v3.listener.SaveListener;
 import team.far.footing2.R;
+import team.far.footing2.app.APP;
 import team.far.footing2.app.BaseActivity;
+import team.far.footing2.model.bean.UserInfo;
+import team.far.footing2.model.bean.Userbean;
+import team.far.footing2.model.callback.OnLoginListener;
+import team.far.footing2.model.callback.OnUserListener;
+import team.far.footing2.model.impl.UserModel;
+import team.far.footing2.uitl.BmobUtils;
+import team.far.footing2.uitl.LogUtils;
 
 public class HomeActivity extends BaseActivity {
 
@@ -28,11 +41,10 @@ public class HomeActivity extends BaseActivity {
         initToolbar();
         initFonts();
 
-
     }
 
     private void initFonts() {
-        Typeface robotoLight = Typeface.createFromAsset(getAssets(),"fonts/Roboto-Light.ttf");
+        Typeface robotoLight = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
         tvHello.setTypeface(robotoLight);
     }
 

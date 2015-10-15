@@ -1,5 +1,11 @@
 package team.far.footing2.model.impl;
 
+import com.easemob.EMCallBack;
+import com.easemob.chat.EMChatManager;
+import com.easemob.chat.EMConversation;
+import com.easemob.chat.EMMessage;
+import com.easemob.chat.TextMessageBody;
+
 import org.json.JSONObject;
 
 import java.util.List;
@@ -40,181 +46,60 @@ public class MessageModel implements IMessageModel {
 
     @Override
     public void startListener(final OnDateChangeListener onDateChangeListener) {
-        final BmobRealTimeData rtd = new BmobRealTimeData();
-
-        //上个版本的错误--->>暂时不删
-        /*rtd.start(APP.getContext(), new ValueEventListener() {
-            @Override
-            public void onConnectCompleted() {
-                rtd.subRowUpdate("_User", BmobUtils.getCurrentUser().getObjectId());
-                onDateChangeListener.onConnectCompleted();
-            }
-            @Override
-            public void onDataChange(final JSONObject jsonObject) {
-
-                getAllMessage(new FindListener<MessageBean>() {
-                    @Override
-                    public void onSuccess(List<MessageBean> list) {
-                        onDateChangeListener.onDataChange(list);
-                    }
-
-                    @Override
-                    public void onError(int i, String s) {
-                        onDateChangeListener.onError(i, s);
-                    }
-                });
-            }
-        });*/
-
-        BmobUtils.getCurrentUserInfo(new OnUserInfoListener() {
-            @Override
-            public void Success(final UserInfo userInfo) {
-                rtd.start(APP.getContext(), new ValueEventListener() {
-                    @Override
-                    public void onConnectCompleted() {
-                        rtd.subRowUpdate("MessageCenter", userInfo.getMessageCenterId());
-                        onDateChangeListener.onConnectCompleted();
-                    }
-
-                    @Override
-                    public void onDataChange(JSONObject jsonObject) {
-
-                        getAllMessage(new FindListener<MessageBean>() {
-                            @Override
-                            public void onSuccess(List<MessageBean> list) {
-                                onDateChangeListener.onDataChange(list);
-                            }
-
-                            @Override
-                            public void onError(int i, String s) {
-                                onDateChangeListener.onError(i, s);
-                            }
-                        });
-                    }
-                });
-            }
-
-            @Override
-            public void Failed(int i, String reason) {
-
-            }
-        });
 
 
     }
 
     @Override
-    public void deleteMsg(MessageBean messageBean, final OnUserListener onUserListener) {
-        messageBean.delete(APP.getContext(), new DeleteListener() {
+    public void deleteMsg(String username, final OnUserListener onUserListener) {
+        //删除和某个user的整个的聊天记录(包括本地)
+        EMChatManager.getInstance().deleteConversation(username);
+
+    }
+
+    @Override
+    public void makeMsgReaded(MessageBean messageBean) {
+
+    }
+
+    @Override
+    public void sendMssageToUser(final UserInfo userInfo, final String msg, final String content, final OnUserListener onUserListener) {
+        //获取到与聊天人的会话对象。参数username为聊天人的userid或者groupid，后文中的username皆是如此
+        EMConversation conversation = EMChatManager.getInstance().getConversation(BmobUtils.getCurrentUser().getUsername());
+        //创建一条文本消息
+        EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
+        //如果是群聊，设置chattype,默认是单聊
+        message.setChatType(EMMessage.ChatType.Chat);
+        //设置消息body
+        TextMessageBody txtBody = new TextMessageBody(content);
+        message.addBody(txtBody);
+        //设置接收人
+        message.setReceipt(userInfo.getUsername());
+        //把消息加入到此会话对象中
+        conversation.addMessage(message);
+        //发送消息
+        EMChatManager.getInstance().sendMessage(message, new EMCallBack() {
             @Override
             public void onSuccess() {
                 onUserListener.Success();
             }
 
             @Override
-            public void onFailure(int i, String s) {
+            public void onError(int i, String s) {
                 onUserListener.Failed(i, s);
             }
-        });
-    }
-
-    @Override
-    public void makeMsgReaded(MessageBean messageBean) {
-        messageBean.setIsread(1);
-        messageBean.update(APP.getContext());
-    }
-
-    @Override
-    public void sendMssageToUser(final UserInfo userInfo, final String message, final String content, final OnUserListener onUserListener) {
-        final MessageBean messageBean = new MessageBean();
-        messageBean.setGetuser(userInfo);
-
-        BmobUtils.getCurrentUserInfo(new OnUserInfoListener() {
-            @Override
-            public void Success(final UserInfo userInfo) {
-                messageBean.setSenduser(userInfo);
-                messageBean.setIsread(0);
-                messageBean.setMessage(message);
-                messageBean.setContent(content);
-                messageBean.save(APP.getContext(), new SaveListener() {
-                    @Override
-                    public void onSuccess() {
-                        AddMessage(userInfo, messageBean, onUserListener);
-                    }
-
-                    @Override
-                    public void onFailure(int i, String s) {
-                        onUserListener.Failed(i, s);
-                    }
-                });
-            }
 
             @Override
-            public void Failed(int i, String reason) {
+            public void onProgress(int i, String s) {
+                onUserListener.onProgress(i, s);
             }
         });
-
-
-    }
-
-    @Override
-    public void AddMessage(UserInfo userInfo, final MessageBean messageBean, final OnUserListener onUserListener) {
-
-
-        BmobQuery<MessageCenter> query = new BmobQuery<MessageCenter>();
-        query.addWhereEqualTo("userInfo", userInfo);
-        query.include("userInfo");
-        query.findObjects(APP.getContext(), new FindListener<MessageCenter>() {
-            @Override
-            public void onSuccess(List<MessageCenter> list) {
-                MessageCenter messageCenter = list.get(0);
-                if (messageCenter != null) {
-                    messageCenter.setMessageBean(messageBean);
-                    messageCenter.save(APP.getContext());
-                } else throw new NullPointerException();
-            }
-
-            @Override
-            public void onError(int i, String s) {
-            }
-        });
-
-
-        //暂时保留,测试后再删除
-        //上个版本的错误--->>暂时不删
-        final BmobRelation bmobRelation = new BmobRelation();
-        bmobRelation.add(messageBean);
-        userInfo.setMessages(bmobRelation);
-        userInfo.update(APP.getContext(), new UpdateListener() {
-            @Override
-            public void onSuccess() {
-                if (onUserListener != null) onUserListener.Success();
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                if (onUserListener != null) onUserListener.Failed(i, s);
-            }
-        });
-
 
     }
 
     @Override
     public void getAllMessage(final FindListener<MessageBean> findListener) {
-        BmobUtils.getCurrentUserInfo(new OnUserInfoListener() {
-            @Override
-            public void Success(UserInfo userInfo) {
-                BmobQuery<MessageBean> query = new BmobQuery<MessageBean>();
-                query.addWhereRelatedTo("getuser", new BmobPointer(userInfo));
-                query.findObjects(APP.getContext(), findListener);
-            }
 
-            @Override
-            public void Failed(int i, String reason) {
-                throw new RuntimeException("获取数据出错！！！");
-            }
-        });
 
     }
 
