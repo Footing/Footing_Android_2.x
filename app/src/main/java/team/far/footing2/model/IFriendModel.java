@@ -13,7 +13,7 @@ public interface IFriendModel {
     /**
      * @param nickname              ----------查询的用户的nickname
      * @param onQueryFriendListener -----------查询的监听器
-     *                              <p>
+     *                              <p/>
      *                              ## 按照nickname查找
      */
     void queryUserByName(String nickname, OnQueryFriendListener onQueryFriendListener);
@@ -39,13 +39,6 @@ public interface IFriendModel {
      */
     void queryAlluser(OnQueryFriendListener onQueryFriendListener);
 
-    /**
-     * @param userInfo       ------------需要添加的Userbean
-     * @param onUserListener ---------------更新用户数据的监听器
-     *                       <p>
-     *                       加好友只是向对方发送了一条消息--->>> 验证
-     */
-    void SendFriendMsg(UserInfo userInfo, String string, OnUserListener onUserListener);
 
     /**
      * ##查询当前用户已经添加了的好友 list
@@ -81,7 +74,23 @@ public interface IFriendModel {
 
     /**
      * @param userInfo
-     * @param onUserListener 注意：这里再验证后直接调用，双向加好友（应该是验证消息的那个用户调用）
+     * @param onUserListener 注意：这里是向对方发送请求加好友的消息
      */
     void addFriend(UserInfo userInfo, OnUserListener onUserListener);
+
+    /**
+     * @param userInfo
+     * @param onUserListener 这里是用户同意对方加好友后的
+     */
+
+    void ensureAddFriend(UserInfo userInfo, OnUserListener onUserListener);
+
+    /**
+     * 拒绝加好友的请求  ---->>> 现在还是空方法
+     */
+    void refuseAddFriend();
+
+
+
+
 }

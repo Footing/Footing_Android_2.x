@@ -11,6 +11,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 import team.far.footing2.app.APP;
 import team.far.footing2.model.IFriendModel;
+import team.far.footing2.model.IMessageModel;
 import team.far.footing2.model.bean.Friends;
 import team.far.footing2.model.bean.UserInfo;
 import team.far.footing2.model.callback.OnIsMyFriendListener;
@@ -35,13 +36,36 @@ public class FriendModel implements IFriendModel {
 
 
     private FriendModel() {
-
         messageModel = MessageModel.getInstance();
     }
 
     @Override
     public void addFriend(final UserInfo userInfo, final OnUserListener onUserListener) {
-        //把其他人加为好友
+
+        IMessageModel messageModel = MessageModel.getInstance();
+
+        messageModel.sendTxtMssageToUser(userInfo, "==addfriend==", new OnUserListener() {
+            @Override
+            public void Success() {
+                onUserListener.Success();
+            }
+
+            @Override
+            public void Failed(int i, String reason) {
+                onUserListener.Failed(i, reason);
+            }
+
+            @Override
+            public void onProgress(int i, String s) {
+                onUserListener.onProgress(i, s);
+            }
+        });
+
+
+    }
+
+    @Override
+    public void ensureAddFriend(final UserInfo userInfo, final OnUserListener onUserListener) {
         BmobUtils.getCurrentUserInfo(new OnUserInfoListener() {
             @Override
             public void Success(UserInfo userInfoo) {
@@ -60,7 +84,10 @@ public class FriendModel implements IFriendModel {
                 bmobRelation1.add(userInfoo);
                 friends1.setFriends(bmobRelation1);
 
-                MessageModel.getInstance().sendMssageToUser(userInfo, "系统消息", userInfoo.getNickName() + " 加你为好友了。", null);
+                IMessageModel messageModel = MessageModel.getInstance();
+
+                messageModel.sendTxtMssageToUser(userInfo, "加好友成功", null);
+
                 update_friend(friends, friends1, onUserListener);
             }
 
@@ -69,24 +96,10 @@ public class FriendModel implements IFriendModel {
 
             }
         });
-
-
-
     }
 
     @Override
-    public void SendFriendMsg(UserInfo userInfo, String text, final OnUserListener onUserListener) {
-        messageModel.sendMssageToUser(userInfo, text, "addFriend", new OnUserListener() {
-            @Override
-            public void Success() {
-                onUserListener.Success();
-            }
-
-            @Override
-            public void Failed(int i, String reason) {
-                onUserListener.Failed(i, reason);
-            }
-        });
+    public void refuseAddFriend() {
 
     }
 
@@ -278,5 +291,6 @@ public class FriendModel implements IFriendModel {
 
 
     }
+
 
 }
