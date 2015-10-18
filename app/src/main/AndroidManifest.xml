@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="team.far.footing2">
+    package="team.far.footing">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -27,13 +27,13 @@
     <uses-permission android:name="cn.bmob.permission.push" />
 
     <application
-        android:name=".app.APP"
+        android:name="team.far.footing.app.APP"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.activity.HomeActivity"
+            android:name="team.far.footing.ui.activity.HomeActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,7 +54,7 @@
             android:name="UMENG_CHANNEL"
             android:value="Wandoujia" />
 
-        <receiver android:name=".receiver.NewMessageBroadcastReceiver"></receiver>
+        <receiver android:name="team.far.footing.receiver.NewMessageBroadcastReceiver"></receiver>
 
 
         <!-- 设置环信应用的appkey -->

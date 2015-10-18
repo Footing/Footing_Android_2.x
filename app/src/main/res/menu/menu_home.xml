@@ -1,6 +1,42 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".HomeActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".HomeActivity">
+
+    <item android:id="@+id/home_menu_refresh"
+        android:icon="@mipmap/ic_loop"
+        android:title="刷新"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/home_menu_user"
+        android:icon="@mipmap/ic_person_white_24dp"
+        android:title="用户"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/home_menu_overflow"
+        android:icon="@mipmap/ic_overflow"
+        android:title="overflow"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/home_menu_help"
+                android:icon="@mipmap/iconfont_bangzhu"
+                android:title="@string/home_menu_help" />
+
+            <item
+                android:id="@+id/home_menu_feedback"
+                android:icon="@mipmap/iconfont_fankui"
+                android:title="@string/home_menu_feedback" />
+
+            <item
+                android:id="@+id/home_menu_setting"
+                android:icon="@mipmap/iconfont_shezhi"
+                android:title="@string/home_menu_setting" />
+
+            <item
+                android:id="@+id/home_menu_about"
+                android:icon="@mipmap/iconfont_guanyu"
+                android:title="@string/home_menu_about" />
+        </menu>
+    </item>
 </menu>
