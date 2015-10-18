@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import team.far.footing.R;
 import team.far.footing.app.BaseActivity;
 import team.far.footing.ui.fragment.HomeFragment;
+import team.far.footing.uitl.LogUtils;
 
 public class HomeActivity extends BaseActivity {
 
@@ -39,6 +40,8 @@ public class HomeActivity extends BaseActivity {
             mToolbar.setTitle(getResources().getString(R.string.app_name));
             setSupportActionBar(mToolbar);
         }
+        LogUtils.d("Test");
+        LogUtils.d("Test %s","here");
     }
 
     /**
