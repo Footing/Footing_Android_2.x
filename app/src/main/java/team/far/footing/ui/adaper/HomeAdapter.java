@@ -107,6 +107,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     private void bindRecentlyHolder(HomeRecentlyViewHolder holder, int position) {
+        // TODO 在这写死数据的给我出来，我不打死你
         if(position % 2 == 0){
             holder.mIvRecently.setImageResource(R.mipmap.ic_home_list_draw);
             holder.mTvText.setText("重邮新校门到二教");
@@ -124,6 +125,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
      */
     @Override
     public int getItemCount() {
+        // TODO 在这写死数据的给我出来，我不打死你
         if (!isLogin) {
             return 3 + 9;
         } else {

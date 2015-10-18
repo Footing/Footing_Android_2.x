@@ -8,7 +8,7 @@
     <string name="home_menu_help">帮助</string>
 
     <!--主页未登陆时-->
-    <string name="home_unLogin_text">登陆 , 在足下中发现更多功能</string>
+    <string name="home_unLogin_text">登录，开启你的足下之旅</string>
 
     <!--主页功能栏-->
     <string name="home_broadcast">广播</string>

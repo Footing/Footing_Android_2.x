@@ -1,9 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".HomeActivity">
 
     <android.support.v7.widget.Toolbar
@@ -15,9 +14,17 @@
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     <FrameLayout
+        android:layout_below="@+id/home_toolbar"
         android:id="@+id/home_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</LinearLayout>
+    <!--toolbar下方阴影-->
+    <View
+        android:layout_above="@+id/home_toolbar"
+        android:layout_width="match_parent"
+        android:background="@drawable/shadow"
+        android:layout_height="@dimen/toolbar_shadow_height" />
+
+</RelativeLayout>
 

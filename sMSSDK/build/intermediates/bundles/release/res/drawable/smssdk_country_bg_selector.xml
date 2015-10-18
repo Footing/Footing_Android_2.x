@@ -4,4 +4,4 @@
   <!-- 默认时的背景图片-->    
   <item android:drawable="@color/smssdk_white" /> 
 </selector>
-<!-- From: file:/Users/wanglingxiao/Contributions/ASProjects/Footing_Android_2.x/sMSSDK/src/main/res/drawable/smssdk_country_bg_selector.xml -->
+<!-- From: file:/Users/moi/AndroidStudioProjects/Footing_Android_2.x/sMSSDK/src/main/res/drawable/smssdk_country_bg_selector.xml -->

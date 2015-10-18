@@ -6,4 +6,6 @@
     <dimen name="primary_text_size">16sp</dimen>
     <dimen name="title_text_size">18sp</dimen>
     <dimen name="super_text_size">32sp</dimen>
+
+    <dimen name="toolbar_shadow_height">2dp</dimen>
 </resources>

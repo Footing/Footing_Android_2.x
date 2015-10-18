@@ -4,11 +4,11 @@
     <color name="black">#000</color>
 
     <color name="shadow_color">#999</color>
-    <color name="divider_color">#E0E0E0</color>
+    <color name="divider_color">#EDEDED</color>
 
     <!--文本颜色-->
     <color name="primary_text">#212121</color>
-    <color name="secondary_text">#727272</color>
+    <color name="secondary_text">#858383</color>
     <!--主题色-->
     <color name="primary_color">#FB6582</color>
     <color name="primary_dark_color">#C44f65</color>
@@ -16,11 +16,11 @@
     <!--主界面的fab-->
     <color name="home_fab_color">@color/primary_color</color>
     <color name="home_fab_dark_color">@color/primary_dark_color</color>
-    <color name="home_fab_item_search">#99FFCC</color>
+    <color name="home_fab_item_search">#CBFB65</color>
     <color name="home_fab_item_dark_search">#99CC33</color>
-    <color name="home_fab_item_draw">#FFFF00</color>
+    <color name="home_fab_item_draw">#FBDF65</color>
     <color name="home_fab_item_dark_draw">#FFC125</color>
-    <color name="home_fab_item_walk">#FF9933</color>
+    <color name="home_fab_item_walk">#FBBD65</color>
     <color name="home_fab_item_dark_walk">#FF6600</color>
 
 </resources>
