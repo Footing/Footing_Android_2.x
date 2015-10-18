@@ -1,5 +1,26 @@
 <resources>
-    <string name="app_name">Footing</string>
-    <string name="hello_world">Hello Footing!</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">足下</string>
+
+    <!--主页menu-->
+    <string name="home_menu_setting">设置</string>
+    <string name="home_menu_about">关于</string>
+    <string name="home_menu_feedback">反馈</string>
+    <string name="home_menu_help">帮助</string>
+
+    <!--主页未登陆时-->
+    <string name="home_unLogin_text">登陆 , 在足下中发现更多功能</string>
+
+    <!--主页功能栏-->
+    <string name="home_broadcast">广播</string>
+    <string name="home_friends">朋友</string>
+    <string name="home_rooms">房间</string>
+
+    <!--主页最近列表-->
+    <string name="home_recently_text">最近记录</string>
+
+    <!--主页fab-->
+    <string name="home_fab_search">搜索</string>
+    <string name="home_fab_draw">绘制</string>
+    <string name="home_fab_walk">行走</string>
+
 </resources>

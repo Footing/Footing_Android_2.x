@@ -1,63 +1,95 @@
 package team.far.footing.ui.activity;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import com.orhanobut.logger.Logger;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import team.far.footing.R;
+import team.far.footing.app.BaseActivity;
+import team.far.footing.ui.fragment.HomeFragment;
+import team.far.footing.uitl.LogUtils;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
 
-    @InjectView(R.id.toolbar)
+    @Bind(R.id.home_toolbar)
     Toolbar mToolbar;
-    @InjectView(R.id.tv_hello)
-    TextView tvHello;
+
+    private long mExitTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        ButterKnife.inject(this);
-
-        initToolbar();
-        initFonts();
+        ButterKnife.bind(this);
+        setupToolbar();
+        if (savedInstanceState == null) {
+            setupHomeFragment();
+        }
     }
 
-    private void initFonts() {
-        Typeface robotoLight = Typeface.createFromAsset(getAssets(),"fonts/Roboto-Light.ttf");
-        tvHello.setTypeface(robotoLight);
+    private void setupToolbar() {
+        if (mToolbar != null) {
+            mToolbar.setTitle(getResources().getString(R.string.app_name));
+            setSupportActionBar(mToolbar);
+        }
+        LogUtils.d("Test");
+        LogUtils.d("Test %s","here");
     }
 
-    private void initToolbar() {
-        mToolbar.setTitle(getResources().getString(R.string.app_name));
-        setSupportActionBar(mToolbar);
+    /**
+     * 主界面的内容区域{@link HomeFragment}
+     */
+    private void setupHomeFragment() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.home_container, new HomeFragment())
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.home_menu_help:
+                break;
+            case R.id.home_menu_feedback:
+                break;
+            case R.id.home_menu_setting:
+                break;
+            case R.id.home_menu_about:
+                break;
         }
-
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                mExitTime = System.currentTimeMillis();
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

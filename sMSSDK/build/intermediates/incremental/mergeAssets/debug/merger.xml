@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/Users/moi/AndroidStudioProjects/Footing_Android_2.x/sMSSDK/src/main/assets"/></dataSet><dataSet config="debug"><source path="/Users/moi/AndroidStudioProjects/Footing_Android_2.x/sMSSDK/src/debug/assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/Users/wanglingxiao/Contributions/ASProjects/Footing_Android_2.x/sMSSDK/src/main/assets"/></dataSet><dataSet config="debug"><source path="/Users/wanglingxiao/Contributions/ASProjects/Footing_Android_2.x/sMSSDK/src/debug/assets"/></dataSet></merger>
