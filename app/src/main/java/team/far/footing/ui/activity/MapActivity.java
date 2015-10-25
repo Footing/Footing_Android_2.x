@@ -171,8 +171,10 @@ public class MapActivity extends BaseActivity implements RevealBackgroundView.On
         //设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
         if(actionType.equals(HomeActivity.MAP_DRAW)) {
             mAMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);//定位
+            isFollowed = false;
         }else{
             mAMap.setMyLocationType(AMap.LOCATION_TYPE_MAP_FOLLOW);//跟随
+            isFollowed = true;
         }
     }
 
