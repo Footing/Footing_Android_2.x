@@ -1,5 +1,6 @@
 package team.far.footing.ui.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
@@ -10,10 +11,11 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import team.far.footing.R;
 import team.far.footing.app.BaseActivity;
+import team.far.footing.model.bean.Userbean;
 import team.far.footing.ui.fragment.HomeFragment;
 import team.far.footing.ui.vu.ILoginVu;
 
-public class HomeActivity extends BaseActivity implements ILoginVu{
+public class HomeActivity extends BaseActivity {
     public static final String ARG_REVEAL_START_LOCATION = "reveal_start_location";
 
     private long mExitTime;
@@ -88,5 +90,6 @@ public class HomeActivity extends BaseActivity implements ILoginVu{
         }
         return super.onKeyDown(keyCode, event);
     }
+
 
 }

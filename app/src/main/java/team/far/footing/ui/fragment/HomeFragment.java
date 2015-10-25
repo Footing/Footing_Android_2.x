@@ -30,6 +30,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import team.far.footing.R;
+import team.far.footing.app.APP;
 import team.far.footing.ui.activity.MapActivity;
 import team.far.footing.ui.adaper.HomeAdapter;
 import team.far.footing.uitl.DensityUtils;
@@ -163,7 +164,7 @@ public class HomeFragment extends Fragment implements RapidFloatingActionContent
             }
         };
         mRecyclerView.setLayoutManager(layoutManager);
-        mHomeAdapter = new HomeAdapter(getContext(), getActivity());
+        mHomeAdapter = new HomeAdapter(APP.getContext(), getActivity());
         mRecyclerView.setAdapter(mHomeAdapter);
     }
 

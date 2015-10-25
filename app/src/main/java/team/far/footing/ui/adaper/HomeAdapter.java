@@ -41,7 +41,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     private View mRecentlyView;
 
-    public HomeAdapter(Context context) {
+    public HomeAdapter(Context context1, Context context) {
         mContext = context;
 
         if (BmobUtils.getCurrentUser() != null) {
