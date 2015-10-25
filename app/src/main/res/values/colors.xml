@@ -23,4 +23,9 @@
     <color name="home_fab_item_walk">#FBBD65</color>
     <color name="home_fab_item_dark_walk">#FF6600</color>
 
+    <!--Map-->
+    <color name="map_circle_fill">@android:color/transparent</color>
+    <color name="map_circle_border">#1E90FF</color>
+
+
 </resources>

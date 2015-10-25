@@ -15,7 +15,9 @@ import team.far.footing.ui.vu.ILoginVu;
 
 public class HomeActivity extends BaseActivity implements ILoginVu{
     public static final String ARG_REVEAL_START_LOCATION = "reveal_start_location";
-
+    public static final String MAP_ACTION_TYPE = "action_type";
+    public static final String MAP_WALK = "walk";
+    public static final String MAP_DRAW = "draw";
     private long mExitTime;
     private boolean mIsPendingIntroAnimation;
     private HomeFragment mHomeFragment;
