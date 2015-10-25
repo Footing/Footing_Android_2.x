@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="team.far.footing">
+    package="team.far.footing" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -20,50 +20,62 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <permission
         android:name="cn.bmob.permission.push"
-        android:protectionLevel="normal"></permission>
+        android:protectionLevel="normal" />
+
     <uses-permission android:name="cn.bmob.permission.push" />
 
     <application
-        android:name="team.far.footing.app.APP"
+        android:name=".app.APP"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="6e2030ef7614313871d514b0046e0431" />
+
         <activity
-            android:name="team.far.footing.ui.activity.HomeActivity"
-            android:label="@string/app_name">
+            android:name=".ui.activity.HomeActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
+        <!-- 地图key -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="6e2030ef7614313871d514b0046e0431" />
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="@string/UMeng_Key"></meta-data>
+            android:value="@string/UMeng_Key" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Wandoujia" />
 
-        <receiver android:name="team.far.footing.receiver.NewMessageBroadcastReceiver"></receiver>
-
+        <receiver android:name=".receiver.NewMessageBroadcastReceiver" />
 
         <!-- 设置环信应用的appkey -->
         <meta-data
             android:name="EASEMOB_APPKEY"
             android:value="9399#footing" />
-        <!-- 声明sdk所需的service SDK核心功能-->
+        <!-- 声明sdk所需的service SDK核心功能 -->
         <service android:name="com.easemob.chat.EMChatService" />
 
+        <activity android:name=".ui.activity.MapActivity" >
+        </activity>
     </application>
 
 </manifest>

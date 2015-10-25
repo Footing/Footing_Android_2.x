@@ -43,4 +43,8 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     //log
     compile 'com.orhanobut:logger:1.11'
+    //高德地图
+    compile files('libs/Android_2DMapApi_V2.5.0.jar')
+    compile files('libs/AMap_Services_V2.5.0.jar')
+    compile files('libs/Android_Location_V1.3.3.jar')
 }
