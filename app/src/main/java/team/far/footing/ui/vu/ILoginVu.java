@@ -19,9 +19,9 @@ public interface ILoginVu {
 
     void clearPassword();
 
-    void showLoginLoading();
+    void showLoginLoading(int progress, String status);
 
-    void showLoginSuccee(Userbean userbean);
+    void showLoginSuccee();
 
     void showLoginFail(int i, String s);
 

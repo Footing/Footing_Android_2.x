@@ -47,4 +47,6 @@ dependencies {
     compile files('libs/Android_Location_V1.3.3.jar')
     compile files('libs/AMap_3DMap_v2.6.0_20150914.jar')
     compile files('libs/AMap_Location_v1.4.1_20150917.jar')
+    compile 'com.android.support:cardview-v7:23.0.1'
+    compile 'me.drakeet.materialdialog:library:1.2.2'
 }

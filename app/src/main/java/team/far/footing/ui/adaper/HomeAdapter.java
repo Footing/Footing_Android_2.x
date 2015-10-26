@@ -1,11 +1,13 @@
 package team.far.footing.ui.adaper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
@@ -13,6 +15,8 @@ import com.orhanobut.logger.Logger;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import team.far.footing.R;
+import team.far.footing.app.APP;
+import team.far.footing.ui.activity.LoginActivity;
 import team.far.footing.uitl.BmobUtils;
 
 /**
@@ -22,26 +26,36 @@ import team.far.footing.uitl.BmobUtils;
  */
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
 
-    /**未登陆时,显示的login区域*/
+    /**
+     * 未登陆时,显示的login区域
+     */
     public static final int TYPE_LOGIN = 0;
 
-    /**功能区域*/
+    /**
+     * 功能区域
+     */
     public static final int TYPE_FUNCTION = 1;
 
-    /**最近两个字*/
+    /**
+     * 最近两个字
+     */
     public static final int TYPE_RECENTLY_TEXT = 2;
 
-    /**最近列表*/
+    /**
+     * 最近列表
+     */
     public static final int TYPE_RECENTLY = 3;
 
     private Context mContext;
 
-    /**用户是否登陆*/
+    /**
+     * 用户是否登陆
+     */
     private boolean isLogin = false;
 
     private View mRecentlyView;
 
-    public HomeAdapter(Context context1, Context context) {
+    public HomeAdapter(Context context) {
         mContext = context;
 
         if (BmobUtils.getCurrentUser() != null) {
@@ -78,7 +92,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (viewType == TYPE_LOGIN) {
             final View view = inflater.inflate(R.layout.layout_home_header_login, parent, false);
             HomeLoginViewHolder holder = new HomeLoginViewHolder(view);
-            holder.mIvLogin.setOnClickListener(this);
+            holder.view.setOnClickListener(this);
             return holder;
         } else if (viewType == TYPE_FUNCTION) {
             final View view = inflater.inflate(R.layout.layout_home_header_function, parent, false);
@@ -88,7 +102,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             holder.miVRooms.setOnClickListener(this);
             return holder;
         } else if (viewType == TYPE_RECENTLY_TEXT) {
-            final View view = inflater.inflate(R.layout.layout_home_recently_text,parent,false);
+            final View view = inflater.inflate(R.layout.layout_home_recently_text, parent, false);
             return new HomeRecentlyTextViewHolder(view);
         } else {
             mRecentlyView = inflater.inflate(R.layout.item_recently, parent, false);
@@ -101,20 +115,20 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final int itemType = holder.getItemViewType();
         if (itemType == TYPE_RECENTLY) {
-            bindRecentlyHolder((HomeRecentlyViewHolder) holder, position-2);
+            bindRecentlyHolder((HomeRecentlyViewHolder) holder, position - 2);
         }
     }
 
 
     private void bindRecentlyHolder(HomeRecentlyViewHolder holder, int position) {
         // TODO 在这写死数据的给我出来，我不打死你
-        if(position % 2 == 0){
+        if (position % 2 == 0) {
             holder.mIvRecently.setImageResource(R.mipmap.ic_home_list_draw);
             holder.mTvText.setText("重邮新校门到二教");
-        }else if(position % 3 == 0){
+        } else if (position % 3 == 0) {
             holder.mIvRecently.setImageResource(R.mipmap.ic_home_list_position);
             holder.mTvText.setText("我在老操场");
-        }else{
+        } else {
             holder.mIvRecently.setImageResource(R.mipmap.ic_home_list_walk);
             holder.mTvText.setText("重邮之行");
         }
@@ -139,11 +153,18 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (v == mRecentlyView) {
             Logger.d("mRecently has clicked");
         }
+        if (id == R.id.home_lin_header) {
+            Intent intent = new Intent(mContext, LoginActivity.class);
+            mContext.startActivity(intent);
+
+        }
     }
 
     class HomeLoginViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.home_iv_login)
         ImageView mIvLogin;
+        @Bind(R.id.home_lin_header)
+        LinearLayout view;
 
         public HomeLoginViewHolder(View itemView) {
             super(itemView);

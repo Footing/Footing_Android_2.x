@@ -32,6 +32,9 @@ public interface IUserModel {
      */
     void loginVerifyCode(String phonenumber, String code);
 
+
+    void login(String phone,String password,OnLoginListener onLoginListener);
+
     /**
      * 注册的监听器  --> 注册的gui包含在这里面，所以调用此方法就会弹出注册的gui
      *
@@ -40,7 +43,15 @@ public interface IUserModel {
      *                       <p/>
      *                       会调回来在子线程
      */
-    void register(OnUserListener onUserListener);
+    void register(String password, OnUserListener onUserListener);
+
+    /**
+     * @param phone
+     * @param password
+     * @param nickname
+     * @param onUserListener 新定义的注册
+     */
+    void register(String phone, String password, String nickname, OnUserListener onUserListener);
 
     /**
      * @param onUserListener 退出当前登录
@@ -58,11 +69,13 @@ public interface IUserModel {
      * @param onUserListener ------------更新用户数据的监听器
      */
     void updateUser_level(int level, OnUserListener onUserListener);
+
     /**
      * @param nickname       ------------昵称
      * @param onUserListener --------------更新用户数据的监听器
      */
     void update_NickName(String nickname, OnUserListener onUserListener);
+
     /**
      * @param PraiseCount    ----------点赞次数
      * @param onUserListener -----------更新用户数据的监听器

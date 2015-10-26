@@ -74,7 +74,11 @@
         <!-- 声明sdk所需的service SDK核心功能 -->
         <service android:name="com.easemob.chat.EMChatService" />
 
-        <activity android:name=".ui.activity.MapActivity" >
+        <activity android:name=".ui.activity.MapActivity" />
+        <activity android:name=".ui.activity.LoginActivity" />
+        <activity
+            android:name=".ui.activity.RegisterActivity"
+            android:label="@string/title_activity_regster" >
         </activity>
     </application>
 

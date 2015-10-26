@@ -30,6 +30,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import team.far.footing.R;
+import team.far.footing.app.APP;
 import team.far.footing.ui.activity.HomeActivity;
 import team.far.footing.ui.activity.MapActivity;
 import team.far.footing.ui.adaper.HomeAdapter;
