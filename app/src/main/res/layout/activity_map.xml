@@ -14,13 +14,12 @@
     <include android:id="@+id/toolbar"
         layout="@layout/layout_toolbar"/>
 
-
-    <com.amap.api.maps2d.MapView
-        android:id="@+id/map_view"
+    <com.amap.api.maps.MapView
+        android:id="@+id/map_map_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar">
 
-    </com.amap.api.maps2d.MapView>
+    </com.amap.api.maps.MapView>
 
 </RelativeLayout>

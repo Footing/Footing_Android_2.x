@@ -44,7 +44,7 @@ dependencies {
     //log
     compile 'com.orhanobut:logger:1.11'
     //高德地图
-    compile files('libs/Android_2DMapApi_V2.5.0.jar')
-    compile files('libs/AMap_Services_V2.5.0.jar')
     compile files('libs/Android_Location_V1.3.3.jar')
+    compile files('libs/AMap_3DMap_v2.6.0_20150914.jar')
+    compile files('libs/AMap_Location_v1.4.1_20150917.jar')
 }

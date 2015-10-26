@@ -30,7 +30,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import team.far.footing.R;
-import team.far.footing.app.APP;
+import team.far.footing.ui.activity.HomeActivity;
 import team.far.footing.ui.activity.MapActivity;
 import team.far.footing.ui.adaper.HomeAdapter;
 import team.far.footing.uitl.DensityUtils;
@@ -125,6 +125,7 @@ public class HomeFragment extends Fragment implements RapidFloatingActionContent
     }
 
     private void setupRefresh() {
+        //TODO 刷新逻辑
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -133,7 +134,6 @@ public class HomeFragment extends Fragment implements RapidFloatingActionContent
                     @Override
                     public void run() {
                         mSwipeRefreshLayout.setRefreshing(false);
-                        LogUtils.d("work here");
                     }
                 }, 1800);
             }
@@ -148,10 +148,10 @@ public class HomeFragment extends Fragment implements RapidFloatingActionContent
         if (position == 0) {
 
         } else if (position == 1) {
-            MapActivity.startMapActivityFromLocation(startingLocation, homeActivity);
+            MapActivity.startMapActivityFromLocation(HomeActivity.MAP_DRAW,startingLocation, homeActivity);
             homeActivity.overridePendingTransition(0, 0);
         } else {
-            MapActivity.startMapActivityFromLocation(startingLocation, homeActivity);
+            MapActivity.startMapActivityFromLocation(HomeActivity.MAP_WALK,startingLocation, homeActivity);
             homeActivity.overridePendingTransition(0, 0);
         }
     }
@@ -164,7 +164,7 @@ public class HomeFragment extends Fragment implements RapidFloatingActionContent
             }
         };
         mRecyclerView.setLayoutManager(layoutManager);
-        mHomeAdapter = new HomeAdapter(APP.getContext(), getActivity());
+        mHomeAdapter = new HomeAdapter(getActivity());
         mRecyclerView.setAdapter(mHomeAdapter);
     }
 
