@@ -1,5 +1,7 @@
 package team.far.footing.model.impl;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.bmob.BTPFileResponse;
@@ -102,9 +104,8 @@ public class UserModel implements IUserModel {
                     } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
                         //返回支持发送验证码的国家列表
                     }
-                }
-                else{
-                    ((Throwable)data).printStackTrace();
+                } else {
+                    ((Throwable) data).printStackTrace();
                 }
             }
 
@@ -130,10 +131,10 @@ public class UserModel implements IUserModel {
                 EMChatManager.getInstance().login(phone, phone, new EMCallBack() {
                     @Override
                     public void onSuccess() {
-                        EMGroupManager.getInstance().loadAllGroups();
-                        EMChatManager.getInstance().loadAllConversations();
-                        LogUtils.d("main", "登陆聊天服务器成功！");
+                        LogUtils.e("main", "登陆聊天服务器成功！");
                         onLoginListener.onSuccess();
+                        // EMGroupManager.getInstance().loadAllGroups();
+                        //EMChatManager.getInstance().loadAllConversations();
                     }
 
                     @Override
@@ -150,7 +151,7 @@ public class UserModel implements IUserModel {
 
             @Override
             public void onFailure(int i, String s) {
-
+                onLoginListener.onProgress(i, s);
             }
         });
     }
@@ -160,8 +161,6 @@ public class UserModel implements IUserModel {
         sendSMS(new OnSMSListener() {
                     @Override
                     public void success(String country, final String phone) {
-
-
 
 
                         final Userbean userbean = new Userbean();
@@ -299,13 +298,15 @@ public class UserModel implements IUserModel {
                                                                                             public void run() {
                                                                                                 try {
                                                                                                     // 调用sdk注册方法
+                                                                                                    Looper.prepare();
                                                                                                     EMChatManager.getInstance().createAccountOnServer(phone, phone);
+
                                                                                                     onUserListener.Success();
                                                                                                 } catch (final EaseMobException e) {
                                                                                                     onUserListener.Failed(404, "注册出错了");
                                                                                                 }
                                                                                             }
-                                                                                        });
+                                                                                        }).start();
                                                                                     }
 
                                                                                     @Override
@@ -344,13 +345,13 @@ public class UserModel implements IUserModel {
                                 }
                         );
 
-                    }else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
+                    } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
                         //获取验证码成功
-                    }else if (event ==SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES){
+                    } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
                         //返回支持发送验证码的国家列表
                     }
-                }else{
-                    ((Throwable)data).printStackTrace();
+                } else {
+                    ((Throwable) data).printStackTrace();
                 }
             }
         };

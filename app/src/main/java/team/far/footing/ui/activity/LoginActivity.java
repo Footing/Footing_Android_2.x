@@ -17,6 +17,7 @@ import team.far.footing.app.BaseActivity;
 import team.far.footing.model.bean.Userbean;
 import team.far.footing.presenter.LoginPresenter;
 import team.far.footing.ui.vu.ILoginVu;
+import team.far.footing.uitl.LogUtils;
 
 /**
  * Created by luoyy on 2015/10/25 0025.
@@ -91,7 +92,7 @@ public class LoginActivity extends BaseActivity implements ILoginVu, View.OnClic
 
     @Override
     public void showLoginFail(int i, String s) {
-        showdialog(getResources().getString(R.string.login_dialog_fail));
+        showdialog(getResources().getString(R.string.login_dialog_fail)+s);
     }
 
     @Override
@@ -105,6 +106,7 @@ public class LoginActivity extends BaseActivity implements ILoginVu, View.OnClic
 
         switch (id) {
             case R.id.login_btn_login:
+                LogUtils.e("点击了登录");
                 loginPresenter.login(getUserName(), getPassword());
                 break;
             case R.id.register:

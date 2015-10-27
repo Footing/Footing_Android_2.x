@@ -30,20 +30,22 @@ public class LoginPresenter {
     }
 
     public void login(String username, String password) {
-
         userModel.login(username, password, new OnLoginListener() {
             @Override
             public void onSuccess() {
+                LogUtils.e("登录成功");
                 iLoginVu.showLoginSuccee();
             }
 
             @Override
             public void onProgress(int progress, String status) {
+                LogUtils.e("正在登录");
                 iLoginVu.showLoginLoading(progress, status);
             }
 
             @Override
             public void onError(int code, String message) {
+                LogUtils.e("登录失败");
                 iLoginVu.showLoginFail(code, message);
             }
         });
@@ -56,16 +58,19 @@ public class LoginPresenter {
         userModel.register(phone, password, nickname, new OnUserListener() {
             @Override
             public void Success() {
+                LogUtils.e("注册成功");
                 iRegisterVu.showRegisterSuccee();
             }
 
             @Override
             public void Failed(int i, String reason) {
+                LogUtils.e("注册失败");
                 iRegisterVu.showRegisterFail(i, reason);
             }
 
             @Override
             public void onProgress(int i, String s) {
+                LogUtils.e("正在注册");
                 iRegisterVu.showRegisterLoading(i, s);
             }
         });
