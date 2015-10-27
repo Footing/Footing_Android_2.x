@@ -49,6 +49,7 @@
     <string name="register_dialog_fail">注册失败</string>
     <string name="register_dialog_Loading">正在注册</string>
     <string name="register_dialog_cancel">注册取消</string>
+    <string name="verify_btn_ok">确定</string>
 
 
     <!--activity-->
@@ -56,5 +57,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_verify">VerifyActivity</string>
 
 </resources>

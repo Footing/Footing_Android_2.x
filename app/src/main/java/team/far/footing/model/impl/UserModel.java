@@ -55,42 +55,60 @@ public class UserModel implements IUserModel {
         EventHandler eh = new EventHandler() {
             @Override
             public void afterEvent(final int event, final int result, Object data) {
-                final Userbean loginBean = new Userbean();
-                loginBean.setUsername(phonenumber);
-                loginBean.setPassword(phonenumber);
-                loginBean.login(APP.getContext(), new SaveListener() {
-                    @Override
-                    public void onSuccess() {
-                        EMChatManager.getInstance().login(phonenumber, phonenumber, new EMCallBack() {//回调
+
+                if (result == SMSSDK.RESULT_COMPLETE) {
+                    if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+
+                        LogUtils.e("提交验证码成功");
+                        //提交验证码成功
+                        final Userbean loginBean = new Userbean();
+                        loginBean.setUsername(phonenumber);
+                        loginBean.setPassword(phonenumber);
+                        loginBean.login(APP.getContext(), new SaveListener() {
                             @Override
                             public void onSuccess() {
-                                EMGroupManager.getInstance().loadAllGroups();
-                                EMChatManager.getInstance().loadAllConversations();
-                                LogUtils.d("main", "登陆聊天服务器成功！");
-                                onLoginListener.onSuccess();
+                                EMChatManager.getInstance().login(phonenumber, phonenumber, new EMCallBack() {//回调
+                                    @Override
+                                    public void onSuccess() {
+                                        EMGroupManager.getInstance().loadAllGroups();
+                                        EMChatManager.getInstance().loadAllConversations();
+                                        LogUtils.d("main", "登陆聊天服务器成功！");
+                                        onLoginListener.onSuccess();
+                                    }
+
+                                    @Override
+                                    public void onProgress(int progress, String status) {
+                                        onLoginListener.onProgress(progress, status);
+                                    }
+
+                                    @Override
+                                    public void onError(int code, String message) {
+                                        Log.d("main", "登陆聊天服务器失败！");
+                                        onLoginListener.onError(event, message);
+                                    }
+                                });
                             }
 
                             @Override
-                            public void onProgress(int progress, String status) {
-                                onLoginListener.onProgress(progress, status);
-                            }
-
-                            @Override
-                            public void onError(int code, String message) {
-                                Log.d("main", "登陆聊天服务器失败！");
-                                onLoginListener.onError(event, message);
+                            public void onFailure(int i, String s) {
+                                onLoginListener.onError(event, s);
                             }
                         });
+
+
+                    } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                        //获取验证码成功
+
+                    } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
+                        //返回支持发送验证码的国家列表
                     }
-
-                    @Override
-                    public void onFailure(int i, String s) {
-                        onLoginListener.onError(event, s);
-                    }
-                });
-
-
+                }
+                else{
+                    ((Throwable)data).printStackTrace();
+                }
             }
+
+
         };
         SMSSDK.registerEventHandler(eh); //注册短信回调
         SMSSDK.getVerificationCode("86", phonenumber);
@@ -142,6 +160,9 @@ public class UserModel implements IUserModel {
         sendSMS(new OnSMSListener() {
                     @Override
                     public void success(String country, final String phone) {
+
+
+
 
                         final Userbean userbean = new Userbean();
                         userbean.setUsername(phone);
@@ -238,86 +259,99 @@ public class UserModel implements IUserModel {
 
         final EventHandler eventHandler = new EventHandler() {
             @Override
-            public void afterEvent(int i, int i1, Object o) {
-                final Userbean userbean = new Userbean();
-                userbean.setUsername(phone);
-                userbean.setPassword(password);
-                userbean.setMobilePhoneNumber(phone);
-                userbean.signUp(APP.getContext(), new SaveListener() {
-                            @Override
-                            public void onSuccess() {
-                                final Friends friends = new Friends();
-                                friends.setUsername(phone);
-                                friends.save(APP.getContext(), new SaveListener() {
-                                            @Override
-                                            public void onSuccess() {
-                                                final UserInfo userInfo = new UserInfo();
-                                                userInfo.setUsername(phone);
-                                                userInfo.setNickName(nickname);
-                                                userInfo.setFriendId(friends.getObjectId());
-                                                userInfo.setUserbean(BmobUtils.getCurrentUser());
-                                                userInfo.save(APP.getContext(), new SaveListener() {
-                                                            @Override
-                                                            public void onSuccess() {
-                                                                friends.setUserbean(userInfo);
-                                                                friends.save(APP.getContext());
+            public void afterEvent(final int event, final int result, Object data) {
 
-                                                                final MessageCenter messageCenter = new MessageCenter();
-                                                                messageCenter.setUserInfo(userInfo);
-                                                                messageCenter.save(APP.getContext(), new SaveListener() {
-                                                                            @Override
-                                                                            public void onSuccess() {
-                                                                                userInfo.setMessageCenterId(messageCenter.getObjectId());
-                                                                                userInfo.save(APP.getContext());
-                                                                                new Thread(new Runnable() {
-                                                                                    public void run() {
-                                                                                        try {
-                                                                                            // 调用sdk注册方法
-                                                                                            EMChatManager.getInstance().createAccountOnServer(phone, phone);
-                                                                                            onUserListener.Success();
-                                                                                        } catch (final EaseMobException e) {
-                                                                                            onUserListener.Failed(404, "注册出错了");
-                                                                                        }
+                if (result == SMSSDK.RESULT_COMPLETE) {
+                    //回调完成
+                    if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
+                        //提交验证码成功
+                        final Userbean userbean = new Userbean();
+                        userbean.setUsername(phone);
+                        userbean.setPassword(password);
+                        userbean.setMobilePhoneNumber(phone);
+                        userbean.signUp(APP.getContext(), new SaveListener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        final Friends friends = new Friends();
+                                        friends.setUsername(phone);
+                                        friends.save(APP.getContext(), new SaveListener() {
+                                                    @Override
+                                                    public void onSuccess() {
+                                                        final UserInfo userInfo = new UserInfo();
+                                                        userInfo.setUsername(phone);
+                                                        userInfo.setNickName(nickname);
+                                                        userInfo.setFriendId(friends.getObjectId());
+                                                        userInfo.setUserbean(BmobUtils.getCurrentUser());
+                                                        userInfo.save(APP.getContext(), new SaveListener() {
+                                                                    @Override
+                                                                    public void onSuccess() {
+                                                                        friends.setUserbean(userInfo);
+                                                                        friends.save(APP.getContext());
+
+                                                                        final MessageCenter messageCenter = new MessageCenter();
+                                                                        messageCenter.setUserInfo(userInfo);
+                                                                        messageCenter.save(APP.getContext(), new SaveListener() {
+                                                                                    @Override
+                                                                                    public void onSuccess() {
+                                                                                        userInfo.setMessageCenterId(messageCenter.getObjectId());
+                                                                                        userInfo.save(APP.getContext());
+                                                                                        new Thread(new Runnable() {
+                                                                                            public void run() {
+                                                                                                try {
+                                                                                                    // 调用sdk注册方法
+                                                                                                    EMChatManager.getInstance().createAccountOnServer(phone, phone);
+                                                                                                    onUserListener.Success();
+                                                                                                } catch (final EaseMobException e) {
+                                                                                                    onUserListener.Failed(404, "注册出错了");
+                                                                                                }
+                                                                                            }
+                                                                                        });
                                                                                     }
-                                                                                });
-                                                                            }
 
-                                                                            @Override
-                                                                            public void onFailure(int i, String s) {
-                                                                                LogUtils.e("注册失败" + s + i);
-                                                                                onUserListener.Failed(i, s);
-                                                                            }
-                                                                        }
-                                                                );
-                                                            }
+                                                                                    @Override
+                                                                                    public void onFailure(int i, String s) {
+                                                                                        LogUtils.e("注册失败" + s + i);
+                                                                                        onUserListener.Failed(i, s);
+                                                                                    }
+                                                                                }
+                                                                        );
+                                                                    }
 
-                                                            @Override
-                                                            public void onFailure(int i, String s) {
-                                                                LogUtils.e("注册失败" + s + i);
-                                                                onUserListener.Failed(i, s);
-                                                            }
-                                                        }
+                                                                    @Override
+                                                                    public void onFailure(int i, String s) {
+                                                                        LogUtils.e("注册失败" + s + i);
+                                                                        onUserListener.Failed(i, s);
+                                                                    }
+                                                                }
 
-                                                );
-                                            }
+                                                        );
+                                                    }
 
-                                            @Override
-                                            public void onFailure(int i, String s) {
-                                                LogUtils.e("注册失败" + s + i);
-                                                onUserListener.Failed(i, s);
-                                            }
-                                        }
-                                );
-                            }
+                                                    @Override
+                                                    public void onFailure(int i, String s) {
+                                                        LogUtils.e("注册失败" + s + i);
+                                                        onUserListener.Failed(i, s);
+                                                    }
+                                                }
+                                        );
+                                    }
 
-                            @Override
-                            public void onFailure(int i, String s) {
-                                LogUtils.e("注册失败" + s + i);
-                                onUserListener.Failed(i, s);
-                            }
-                        }
-                );
+                                    @Override
+                                    public void onFailure(int i, String s) {
+                                        LogUtils.e("注册失败" + s + i);
+                                        onUserListener.Failed(i, s);
+                                    }
+                                }
+                        );
 
+                    }else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
+                        //获取验证码成功
+                    }else if (event ==SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES){
+                        //返回支持发送验证码的国家列表
+                    }
+                }else{
+                    ((Throwable)data).printStackTrace();
+                }
             }
         };
         SMSSDK.registerEventHandler(eventHandler); //注册短信回调

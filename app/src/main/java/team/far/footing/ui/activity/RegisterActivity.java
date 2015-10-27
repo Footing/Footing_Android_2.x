@@ -13,6 +13,7 @@ import team.far.footing.R;
 import team.far.footing.app.BaseActivity;
 import team.far.footing.presenter.LoginPresenter;
 import team.far.footing.ui.vu.IRegisterVu;
+import team.far.footing.uitl.LogUtils;
 
 public class RegisterActivity extends BaseActivity implements IRegisterVu, View.OnClickListener {
 
@@ -99,7 +100,7 @@ public class RegisterActivity extends BaseActivity implements IRegisterVu, View.
 
     @Override
     public void showRegisterFail(int i, String s) {
-        showdialog(getResources().getString(R.string.register_dialog_fail));
+        showdialog(getResources().getString(R.string.register_dialog_fail)+s);
     }
 
     @Override
@@ -112,9 +113,11 @@ public class RegisterActivity extends BaseActivity implements IRegisterVu, View.
         if (type == 0) {
             loginPresenter.register(getphone(), getPassword(), getNickName());
             send.setText("点击验证");
-            type++;
+             ++type;
+            return;
         }
         if (type == 1) {
+            LogUtils.e("点击了点击验证"+type);
             loginPresenter.VerifyCode(getphone(), getVerifyCode());
         }
     }

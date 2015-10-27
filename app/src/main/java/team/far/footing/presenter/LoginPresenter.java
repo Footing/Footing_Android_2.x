@@ -6,6 +6,7 @@ import team.far.footing.model.callback.OnUserListener;
 import team.far.footing.model.impl.UserModel;
 import team.far.footing.ui.vu.ILoginVu;
 import team.far.footing.ui.vu.IRegisterVu;
+import team.far.footing.uitl.LogUtils;
 
 /**
  * Created by moi on 15/10/2.
@@ -23,7 +24,6 @@ public class LoginPresenter {
         this.iLoginVu = iLoginVu;
         userModel = UserModel.getInstance();
     }
-
     public LoginPresenter(IRegisterVu iRegisterVu) {
         this.iRegisterVu = iRegisterVu;
         userModel = UserModel.getInstance();
@@ -74,6 +74,7 @@ public class LoginPresenter {
 
     public void VerifyCode(String phone, String code) {
         userModel.loginVerifyCode(phone, code);
+        LogUtils.e("正在提交验证");
     }
 
 }
