@@ -61,7 +61,17 @@
             app:rfab_shadow_radius="4dp"
             app:rfab_size="normal" />
 
+        <!--toolbar下方阴影-->
+        <View
+            android:id="@+id/home_toolbar_shadow"
+            android:visibility="gone"
+            android:layout_above="@+id/home_toolbar"
+            android:layout_width="match_parent"
+            android:background="@drawable/shadow"
+            android:layout_height="@dimen/toolbar_shadow_height" />
+
     </com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout>
+
 
 
 </RelativeLayout>
