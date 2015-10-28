@@ -12,7 +12,6 @@
     <!--主题色-->
     <color name="primary_color">#FB6582</color>
     <color name="primary_dark_color">#C44f65</color>
-
     <!--主界面的fab-->
     <color name="home_fab_color">@color/primary_color</color>
     <color name="home_fab_dark_color">@color/primary_dark_color</color>

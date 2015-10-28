@@ -2,20 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="true"
     tools:context=".HomeActivity">
 
     <FrameLayout
-        android:layout_below="@+id/home_toolbar"
         android:id="@+id/home_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <!--toolbar下方阴影-->
-    <View
-        android:layout_above="@+id/home_toolbar"
-        android:layout_width="match_parent"
-        android:background="@drawable/shadow"
-        android:layout_height="@dimen/toolbar_shadow_height" />
 
 </RelativeLayout>
 
