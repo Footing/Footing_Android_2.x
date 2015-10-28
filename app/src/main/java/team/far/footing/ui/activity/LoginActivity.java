@@ -50,8 +50,10 @@ public class LoginActivity extends BaseActivity implements ILoginVu, View.OnClic
     }
 
     private void init() {
-        loginBtnLogin.setOnClickListener(this);
-        register.setOnClickListener(this);
+          loginBtnLogin.setOnClickListener(this);
+
+
+           register.setOnClickListener(this);
         findPassword.setOnClickListener(this);
     }
 
