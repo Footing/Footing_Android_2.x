@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="team.far.footing.ui.activity.MapActivity"
+    android:background="@color/shadow_color"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="true">
+
+    <team.far.footing.ui.widget.RevealBackgroundView
+        android:id="@+id/map_reveal_background_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <include android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar"/>
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/map_map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"/>
+
+    <!--toolbar下方阴影-->
+    <View
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:background="@drawable/shadow"
+        android:layout_height="@dimen/toolbar_shadow_height" />
+
+</RelativeLayout>

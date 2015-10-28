@@ -3,7 +3,6 @@ package team.far.footing.model.callback;
 import java.util.List;
 
 import team.far.footing.model.bean.UserInfo;
-import team.far.footing.model.bean.Userbean;
 
 /**
  * Created by Luoyy on 2015/8/9 0009.
