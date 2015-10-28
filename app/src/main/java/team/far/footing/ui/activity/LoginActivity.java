@@ -81,18 +81,22 @@ public class LoginActivity extends BaseActivity implements ILoginVu, View.OnClic
     }
 
     @Override
-    public void showLoginLoading(int progress, String status) {
+    public void showLoginLoading(int progress) {
         showdialog(getResources().getString(R.string.login_dialog_Loading));
+
     }
 
     @Override
     public void showLoginSuccee() {
         showdialog(getResources().getString(R.string.login_dialog_succee));
+        dismissDialog();
+        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+        LoginActivity.this.startActivity(intent);
     }
 
     @Override
-    public void showLoginFail(int i, String s) {
-        showdialog(getResources().getString(R.string.login_dialog_fail)+s);
+    public void showLoginFail(int i) {
+        showdialog(getResources().getString(R.string.login_dialog_fail) );
     }
 
     @Override

@@ -19,11 +19,11 @@ public interface ILoginVu {
 
     void clearPassword();
 
-    void showLoginLoading(int progress, String status);
+    void showLoginLoading(int progress);
 
     void showLoginSuccee();
 
-    void showLoginFail(int i, String s);
+    void showLoginFail(int i);
 
     void showLogincancel();
 }

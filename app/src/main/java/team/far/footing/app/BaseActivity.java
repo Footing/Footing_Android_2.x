@@ -27,13 +27,16 @@ public class BaseActivity extends AppCompatActivity {
 
 
     public void showdialog(String title) {
+        if (dialog != null) dialog = null;
         dialog = new MaterialDialog(this)
                 .setTitle(getResources().getString(R.string.activity_dialog))
                 .setMessage(title);
+
         dialog.show();
     }
 
     public void dismissDialog() {
-        dialog.dismiss();
+        if (dialog != null)
+            dialog.dismiss();
     }
 }

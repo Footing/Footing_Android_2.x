@@ -1,5 +1,11 @@
 package team.far.footing.presenter;
 
+import android.content.BroadcastReceiver;
+import android.os.Handler;
+import android.os.Message;
+import android.view.View;
+import android.widget.TextView;
+
 import team.far.footing.model.IUserModel;
 import team.far.footing.model.callback.OnLoginListener;
 import team.far.footing.model.callback.OnUserListener;
@@ -16,17 +22,66 @@ import team.far.footing.uitl.LogUtils;
 // 为了防止 P 过多，就把 登录注册的 P 写在一起。
 public class LoginPresenter {
 
+
+    private final static int LOGIN_SUCCESS = 0001;
+    private final static int LOGIN_PROGRESS = 0002;
+    private final static int LOGIN_ERROR = 0003;
+    private final static int REGISTER_SUCCESS = 0004;
+    private final static int REGISTER_PROGRESS = 0005;
+    private final static int REGISTER_ERROR = 0006;
+
+
     private ILoginVu iLoginVu;
     private IRegisterVu iRegisterVu;
     private IUserModel userModel;
+    private Handler handler;
 
     public LoginPresenter(ILoginVu iLoginVu) {
+        this();
         this.iLoginVu = iLoginVu;
         userModel = UserModel.getInstance();
+
     }
-    public LoginPresenter(IRegisterVu iRegisterVu) {
+
+    public LoginPresenter() {
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.arg1) {
+                    case LOGIN_SUCCESS:
+                        iLoginVu.showLoginSuccee();
+                        break;
+                    case LOGIN_PROGRESS:
+                        int progress = msg.what;
+                        iLoginVu.showLoginLoading(progress);
+                        break;
+                    case LOGIN_ERROR:
+                        int errorCode = msg.what;
+                        iLoginVu.showLoginFail(errorCode);
+                        break;
+                    case REGISTER_SUCCESS:
+                        iRegisterVu.showRegisterSuccee();
+                        break;
+                    case REGISTER_PROGRESS:
+                        int pro = msg.what;
+                        iRegisterVu.showRegisterLoading(pro);
+                        break;
+                    case REGISTER_ERROR:
+                        int error = msg.what;
+                        iRegisterVu.showRegisterFail(error);
+                        break;
+
+                }
+            }
+        };
+    }
+
+    public LoginPresenter(final IRegisterVu iRegisterVu) {
+        this();
         this.iRegisterVu = iRegisterVu;
         userModel = UserModel.getInstance();
+
     }
 
     public void login(String username, String password) {
@@ -34,19 +89,27 @@ public class LoginPresenter {
             @Override
             public void onSuccess() {
                 LogUtils.e("登录成功");
-                iLoginVu.showLoginSuccee();
+                Message message = handler.obtainMessage();
+                message.arg1 = LOGIN_SUCCESS;
+                handler.sendMessage(message);
             }
 
             @Override
             public void onProgress(int progress, String status) {
                 LogUtils.e("正在登录");
-                iLoginVu.showLoginLoading(progress, status);
+                Message message = handler.obtainMessage();
+                message.arg1 = LOGIN_PROGRESS;
+                message.what = progress;
+                handler.sendMessage(message);
             }
 
             @Override
-            public void onError(int code, String message) {
+            public void onError(int code, String msg) {
                 LogUtils.e("登录失败");
-                iLoginVu.showLoginFail(code, message);
+                Message message = handler.obtainMessage();
+                message.arg1 = LOGIN_ERROR;
+                message.what = code;
+                handler.sendMessage(message);
             }
         });
 
@@ -59,19 +122,29 @@ public class LoginPresenter {
             @Override
             public void Success() {
                 LogUtils.e("注册成功");
-                iRegisterVu.showRegisterSuccee();
+                //  这里你是在子线程哟
+                Message message = handler.obtainMessage();
+                message.arg1 = REGISTER_SUCCESS;
+                handler.sendMessage(message);
+
             }
 
             @Override
             public void Failed(int i, String reason) {
-                LogUtils.e("注册失败");
-                iRegisterVu.showRegisterFail(i, reason);
+                LogUtils.e("注册失败" + reason);
+                Message message = handler.obtainMessage();
+                message.arg1 = REGISTER_ERROR;
+                message.what = i;
+                handler.sendMessage(message);
             }
 
             @Override
             public void onProgress(int i, String s) {
                 LogUtils.e("正在注册");
-                iRegisterVu.showRegisterLoading(i, s);
+                Message message = handler.obtainMessage();
+                message.arg1 = REGISTER_PROGRESS;
+                message.what = i;
+                handler.sendMessage(message);
             }
         });
     }
