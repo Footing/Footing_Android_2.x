@@ -34,3 +34,4 @@ proguard/
 .idea/
 *.bin
 app/src/main/res/values/key_string.xml
+app/signing.properties

@@ -169,13 +169,15 @@ public class MapActivity extends BaseActivity implements RevealBackgroundView.On
                     switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
 
                         case MotionEvent.ACTION_DOWN:
-                            LatLng Li =
+                           /* LatLng Li =
                                     mAMap.getProjection().fromScreenLocation(new Point((int) motionEvent.getX(), (int) motionEvent.getY()));
                             draw(Li);
+                            */
                             break;
                         case MotionEvent.ACTION_UP:
                             break;
                         case MotionEvent.ACTION_MOVE:
+                            LogUtils.e("正在移动");
                             LatLng moveLa =
                                     mAMap.getProjection().fromScreenLocation(new Point((int) motionEvent.getX(), (int) motionEvent.getY()));
                             draw(moveLa);
@@ -314,6 +316,12 @@ public class MapActivity extends BaseActivity implements RevealBackgroundView.On
             mAMap.setMyLocationType(AMap.LOCATION_TYPE_MAP_FOLLOW);//跟随
             isFollowed = true;
         }
+    }
+
+
+    public List<LatLng> getArrayLocations() {
+        if (listLaLng == null || listLaLng.size() == 0) return;
+        return listLaLng;
     }
 
     /**
