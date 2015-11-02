@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -12,9 +13,9 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Display;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -25,27 +26,34 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.Projection;
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.amap.api.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import team.far.footing.R;
+import team.far.footing.app.APP;
 import team.far.footing.app.BaseActivity;
 import team.far.footing.ui.fragment.HomeFragment;
 import team.far.footing.ui.widget.RevealBackgroundView;
 import team.far.footing.uitl.LogUtils;
+import team.far.footing.uitl.ScreenUtils;
 
 public class MapActivity extends BaseActivity implements RevealBackgroundView.OnStateChangeListener,
-        LocationSource, AMapLocationListener,SensorEventListener{
+        LocationSource, AMapLocationListener, SensorEventListener {
     private static final int TIME_SENSOR = 100;
 
     @Bind(R.id.toolbar)
@@ -64,24 +72,60 @@ public class MapActivity extends BaseActivity implements RevealBackgroundView.On
     private SensorManager mSensorManager;
     private Sensor mSensor;
 
-    /**上次方向改变时的时间*/
+
+    /**
+     * 上次方向改变时的时间
+     */
     private long lastTime = 0;
 
-    /**旋转角*/
+    /**
+     * 旋转角
+     */
     private float mAngle;
 
-    /**操作的方式*/
+    /**
+     * 操作的方式
+     */
     private String actionType;
 
-    /**是否为行走*/
+    /**
+     * 是否为行走
+     */
     private boolean isFollowed;
 
     /**
-     * 打开MapActivity.
-     * @param startLocation 点击位置
-     * @param homeActivity homeActivity
+     * 上次记录的点
      */
-    public static void startMapActivityFromLocation(String actionType,int[] startLocation, Activity homeActivity) {
+    private Point mPoint;
+
+    /**
+     * 重新计算的 中心 LatLng
+     */
+    private LatLng latLng;
+
+    /**
+     * 绘画PolylineOptions
+     */
+    private PolylineOptions polylineOptions;
+
+    /**
+     * 绘图 所需要的 list
+     */
+
+    private List<LatLng> listLaLng;
+
+    /**
+     * 头 LatLng
+     */
+    private LatLng headerLaLng;
+
+    /**
+     * 打开MapActivity.
+     *
+     * @param startLocation 点击位置
+     * @param homeActivity  homeActivity
+     */
+    public static void startMapActivityFromLocation(String actionType, int[] startLocation, Activity homeActivity) {
         Intent intent = new Intent(homeActivity, MapActivity.class);
         intent.putExtra(HomeActivity.ARG_REVEAL_START_LOCATION, startLocation);
         intent.putExtra(HomeActivity.MAP_ACTION_TYPE, actionType);
@@ -98,6 +142,98 @@ public class MapActivity extends BaseActivity implements RevealBackgroundView.On
         setupRevealBackground(savedInstanceState);
         setupMap(savedInstanceState);
         setupSensor();
+        init();
+    }
+
+
+    private void init() {
+        mMapView.getMap().setMapType(AMap.LOCATION_TYPE_LOCATE);
+        //禁止手势移动
+        mMapView.getMap().getUiSettings().setScrollGesturesEnabled(false);
+
+
+        mMapView.getMap().setOnMapClickListener(new AMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+            }
+        });
+
+        mMapView.getMap().setOnMapTouchListener(new AMap.OnMapTouchListener() {
+            @Override
+            public void onTouch(MotionEvent motionEvent) {
+
+                //自有一个手指
+                if (motionEvent.getPointerCount() == 1) {
+
+                    switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+
+                        case MotionEvent.ACTION_DOWN:
+                            LatLng Li =
+                                    mAMap.getProjection().fromScreenLocation(new Point((int) motionEvent.getX(), (int) motionEvent.getY()));
+                            draw(Li);
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            LatLng moveLa =
+                                    mAMap.getProjection().fromScreenLocation(new Point((int) motionEvent.getX(), (int) motionEvent.getY()));
+                            draw(moveLa);
+                            break;
+                    }
+                }
+                //有两个手指
+                else if (motionEvent.getPointerCount() == 2) {
+                    switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+                        case MotionEvent.ACTION_POINTER_DOWN:
+                            mPoint = new Point((int) motionEvent.getX(1), (int) motionEvent.getY(1));
+                            break;
+                        case MotionEvent.ACTION_POINTER_UP:
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            Point move_point = new Point((int) motionEvent.getX(1), (int) motionEvent.getY(1));
+                            CameraPosition cameraPosition = mAMap.getCameraPosition();
+                            /*
+                            double x = cameraPosition.target.longitude;
+                            double y = cameraPosition.target.latitude;
+                            */
+                            Point centerPoint = mAMap.getProjection().toScreenLocation(cameraPosition.target);
+
+                            int x = centerPoint.x;
+                            int y = centerPoint.y;
+
+                            latLng = mAMap.getProjection().fromScreenLocation(
+                                    new Point(x + (mPoint.x - move_point.x), y + (mPoint.y - move_point.y)));
+                            LogUtils.e("移动到了---->>>  经度：" + latLng.longitude + "维度：" + latLng.latitude);
+                            float zoom = cameraPosition.zoom;
+                            float bearing = cameraPosition.bearing;
+                            mMapView.getMap().animateCamera(CameraUpdateFactory.newCameraPosition
+                                    (CameraPosition.builder(new CameraPosition(latLng, zoom, 0, bearing))
+                                            .build()));
+                            break;
+                    }
+                }
+                //不晓得有好多手指
+                else {
+                    LogUtils.e("你是在搞啥子哟");
+                }
+            }
+        });
+
+    }
+
+    private void draw(LatLng latLng) {
+        if (polylineOptions == null) {
+            polylineOptions = new PolylineOptions();
+            listLaLng = new ArrayList<>();
+            listLaLng.add(latLng);
+            polylineOptions.geodesic(true);
+            polylineOptions.width(12);
+            return;
+        }
+        listLaLng.add(latLng);
+        polylineOptions.add(latLng);
+        mAMap.addPolyline(polylineOptions);
     }
 
     private void setupToolbar() {
@@ -171,10 +307,10 @@ public class MapActivity extends BaseActivity implements RevealBackgroundView.On
         // 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
         mAMap.setMyLocationEnabled(true);
         //设置定位的类型为定位模式 ，可以由定位、跟随或地图根据面向方向旋转几种
-        if(actionType.equals(HomeActivity.MAP_DRAW)) {
+        if (actionType.equals(HomeActivity.MAP_DRAW)) {
             mAMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);//定位
             isFollowed = false;
-        }else{
+        } else {
             mAMap.setMyLocationType(AMap.LOCATION_TYPE_MAP_FOLLOW);//跟随
             isFollowed = true;
         }
@@ -186,16 +322,6 @@ public class MapActivity extends BaseActivity implements RevealBackgroundView.On
     private void setupSensor() {
         mSensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -244,15 +370,15 @@ public class MapActivity extends BaseActivity implements RevealBackgroundView.On
         mListener = listener;
         if (mAMapLocationManager == null) {
             mAMapLocationManager = LocationManagerProxy.getInstance(this);
-			/*
-			 * mAMapLocManager.setGpsEnable(false);
+            /*
+             * mAMapLocManager.setGpsEnable(false);
 			 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true Location;
 			 * API定位采用GPS和网络混合定位方式;
 			 * 第一个参数是定位provider，第二个参数时间最短是2000毫秒，如果是-1则只定位一次,
 			 * 第三个参数距离间隔单位是米，第四个参数是定位监听者.
 			 */
             int requestInterval = -1;
-            if(isFollowed){
+            if (isFollowed) {
                 requestInterval = 2000;
             }
             mAMapLocationManager.requestLocationData(

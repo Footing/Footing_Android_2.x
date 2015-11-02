@@ -1,6 +1,5 @@
 package team.far.footing.model.impl;
 
-import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
@@ -8,6 +7,7 @@ import com.bmob.BTPFileResponse;
 import com.bmob.BmobProFile;
 import com.bmob.btp.callback.UploadListener;
 import com.easemob.EMCallBack;
+import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.exceptions.EaseMobException;
@@ -300,10 +300,21 @@ public class UserModel implements IUserModel {
                                                                                                     // 调用sdk注册方法
                                                                                                     Looper.prepare();
                                                                                                     EMChatManager.getInstance().createAccountOnServer(phone, phone);
-
                                                                                                     onUserListener.Success();
                                                                                                 } catch (final EaseMobException e) {
-                                                                                                    onUserListener.Failed(404, "注册出错了");
+                                                                                                    //注册失败
+                                                                                                    int errorCode = e.getErrorCode();
+                                                                                                    if (errorCode == EMError.NONETWORK_ERROR) {
+                                                                                                        LogUtils.e("网络异常，请检查网络！");
+                                                                                                    } else if (errorCode == EMError.USER_ALREADY_EXISTS) {
+                                                                                                        LogUtils.e("用户已存在！");
+                                                                                                    } else if (errorCode == EMError.UNAUTHORIZED) {
+                                                                                                        LogUtils.e("注册失败，无权限！");
+                                                                                                    } else {
+                                                                                                        LogUtils.e("注册失败: " + e.getMessage());
+                                                                                                    }
+                                                                                                    onUserListener.Failed(433, "注册出错了");
+
                                                                                                 }
                                                                                             }
                                                                                         }).start();

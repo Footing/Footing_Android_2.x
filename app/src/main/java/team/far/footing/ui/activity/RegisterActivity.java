@@ -1,7 +1,9 @@
 package team.far.footing.ui.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -89,18 +91,19 @@ public class RegisterActivity extends BaseActivity implements IRegisterVu, View.
     }
 
     @Override
-    public void showRegisterLoading(int i, String s) {
+    public void showRegisterLoading(int i) {
         showdialog(getResources().getString(R.string.register_dialog_Loading));
     }
 
     @Override
     public void showRegisterSuccee() {
         showdialog(getResources().getString(R.string.register_dialog_succee));
+
     }
 
     @Override
-    public void showRegisterFail(int i, String s) {
-        showdialog(getResources().getString(R.string.register_dialog_fail)+s);
+    public void showRegisterFail(int i) {
+        showdialog(getResources().getString(R.string.register_dialog_fail));
     }
 
     @Override
@@ -113,11 +116,11 @@ public class RegisterActivity extends BaseActivity implements IRegisterVu, View.
         if (type == 0) {
             loginPresenter.register(getphone(), getPassword(), getNickName());
             send.setText("点击验证");
-             ++type;
+            ++type;
             return;
         }
         if (type == 1) {
-            LogUtils.e("点击了点击验证"+type);
+            LogUtils.e("点击了点击验证" + type + "button");
             loginPresenter.VerifyCode(getphone(), getVerifyCode());
         }
     }

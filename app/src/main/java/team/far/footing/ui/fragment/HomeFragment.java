@@ -30,7 +30,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import team.far.footing.R;
-import team.far.footing.app.APP;
 import team.far.footing.ui.activity.HomeActivity;
 import team.far.footing.ui.activity.MapActivity;
 import team.far.footing.ui.adaper.HomeAdapter;
@@ -58,6 +57,8 @@ public class HomeFragment extends Fragment implements RapidFloatingActionContent
     SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.home_recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.home_toolbar_shadow)
+    View mToolbarShadow;
 
     private RapidFloatingActionHelper mRfabHelper;
     private HomeAdapter mHomeAdapter;
@@ -81,7 +82,7 @@ public class HomeFragment extends Fragment implements RapidFloatingActionContent
 
     private void setupToolbar() {
         if (mToolbar != null) {
-            ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
+            ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
             mTvToolbarTitle.setText(getResources().getString(R.string.app_name));
         }
     }
@@ -135,6 +136,7 @@ public class HomeFragment extends Fragment implements RapidFloatingActionContent
                     @Override
                     public void run() {
                         mSwipeRefreshLayout.setRefreshing(false);
+                        LogUtils.d("work here");
                     }
                 }, 1800);
             }
@@ -149,10 +151,10 @@ public class HomeFragment extends Fragment implements RapidFloatingActionContent
         if (position == 0) {
 
         } else if (position == 1) {
-            MapActivity.startMapActivityFromLocation(HomeActivity.MAP_DRAW,startingLocation, homeActivity);
+            MapActivity.startMapActivityFromLocation(HomeActivity.MAP_DRAW, startingLocation, homeActivity);
             homeActivity.overridePendingTransition(0, 0);
         } else {
-            MapActivity.startMapActivityFromLocation(HomeActivity.MAP_WALK,startingLocation, homeActivity);
+            MapActivity.startMapActivityFromLocation(HomeActivity.MAP_WALK, startingLocation, homeActivity);
             homeActivity.overridePendingTransition(0, 0);
         }
     }
@@ -170,9 +172,9 @@ public class HomeFragment extends Fragment implements RapidFloatingActionContent
     }
 
     public void startIntroAnimation(View menuUserView) {
-        int actionbarSize = DensityUtils.dp2px(getActivity(),56);
+        int actionbarSize = DensityUtils.dp2px(getActivity(), 56);
 
-        mRfabButton.setTranslationY(2 * DensityUtils.dp2px(getActivity(),56));
+        mRfabButton.setTranslationY(2 * DensityUtils.dp2px(getActivity(), 56));
 
         mToolbar.setTranslationY(-actionbarSize);
         mTvToolbarTitle.setTranslationY(-actionbarSize);
@@ -193,6 +195,8 @@ public class HomeFragment extends Fragment implements RapidFloatingActionContent
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
+                        // 让toolbar下方阴影显示出来
+                        mToolbarShadow.setVisibility(View.VISIBLE);
                         startRfabAnimation();
                     }
                 })
@@ -211,6 +215,7 @@ public class HomeFragment extends Fragment implements RapidFloatingActionContent
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     @Override
