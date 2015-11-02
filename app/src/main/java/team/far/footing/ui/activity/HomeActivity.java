@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
@@ -17,6 +18,7 @@ public class HomeActivity extends BaseActivity {
     public static final String MAP_ACTION_TYPE = "action_type";
     public static final String MAP_WALK = "walk";
     public static final String MAP_DRAW = "draw";
+
     private long mExitTime;
     private boolean mIsPendingIntroAnimation;
     private HomeFragment mHomeFragment;
@@ -30,6 +32,7 @@ public class HomeActivity extends BaseActivity {
             setupHomeFragment();
             mIsPendingIntroAnimation = true;
         }
+        TextView textView = new TextView(this);
     }
 
 

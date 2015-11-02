@@ -13,6 +13,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -184,6 +186,16 @@ public class MapActivity extends BaseActivity implements RevealBackgroundView.On
     private void setupSensor() {
         mSensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     /**
