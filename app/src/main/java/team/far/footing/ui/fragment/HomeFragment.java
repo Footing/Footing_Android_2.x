@@ -87,6 +87,7 @@ public class HomeFragment extends Fragment implements RapidFloatingActionContent
         }
     }
 
+
     private void setupRfab() {
         RapidFloatingActionContentLabelList rfabContent = new RapidFloatingActionContentLabelList(getActivity());
         rfabContent.setOnRapidFloatingActionContentLabelListListener(this);
