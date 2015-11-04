@@ -78,4 +78,6 @@ dependencies {
     compile 'me.drakeet.materialdialog:library:1.2.2'
     compile 'com.android.support:design:23.0.1'
     compile 'com.balysv:material-ripple:1.0.2'
+    compile 'com.afollestad:material-dialogs:0.7.5.5'
+    compile 'org.hybridsquad.android.photocropper:library:2.1.0'
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
+import com.afollestad.materialdialogs.Theme;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.umeng.analytics.MobclickAgent;
 
@@ -17,6 +18,7 @@ import team.far.footing.R;
 public class BaseActivity extends AppCompatActivity {
     private MaterialDialog dialog;
     private SystemBarTintManager tintManager;
+    private com.afollestad.materialdialogs.MaterialDialog dialog1;
 
     @Override
     public void onResume() {
@@ -61,5 +63,20 @@ public class BaseActivity extends AppCompatActivity {
     public void dismissDialog() {
         if (dialog != null)
             dialog.dismiss();
+    }
+
+    public void showProgress(String title) {
+        dialog1 = new com.afollestad.materialdialogs.MaterialDialog.Builder(this)
+                .title(title)
+                .content("请稍候")
+                .theme(Theme.LIGHT)
+                .backgroundColor(getResources().getColor(R.color.white))
+                .progress(true, 100)
+                .cancelable(false)
+                .show();
+    }
+
+    public void dismissProgress() {
+        dialog1.dismiss();
     }
 }
