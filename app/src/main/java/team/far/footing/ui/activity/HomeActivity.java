@@ -1,5 +1,6 @@
 package team.far.footing.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
@@ -12,6 +13,7 @@ import butterknife.ButterKnife;
 import team.far.footing.R;
 import team.far.footing.app.BaseActivity;
 import team.far.footing.ui.fragment.HomeFragment;
+import team.far.footing.uitl.LogUtils;
 
 public class HomeActivity extends BaseActivity {
     public static final String ARG_REVEAL_START_LOCATION = "reveal_start_location";
@@ -54,7 +56,7 @@ public class HomeActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.menu_home, menu);
         MenuItem userItem = menu.findItem(R.id.home_menu_user);
         userItem.setActionView(R.layout.layout_home_menu_user);
-        if(mIsPendingIntroAnimation){
+        if (mIsPendingIntroAnimation) {
             mIsPendingIntroAnimation = false;
             mHomeFragment.startIntroAnimation(userItem.getActionView());
         }
@@ -64,10 +66,14 @@ public class HomeActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.home_menu_user:
+                LogUtils.e("点击了");
+                startActivity(new Intent(HomeActivity.this, UserInfoActivity.class));
                 break;
             case R.id.home_menu_help:
+                LogUtils.e("点击了bangzhu");
+                startActivity(new Intent(HomeActivity.this, UserInfoActivity.class));
                 break;
             case R.id.home_menu_feedback:
                 break;

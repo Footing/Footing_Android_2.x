@@ -6,6 +6,7 @@ import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
 
+import cn.smssdk.SMSSDK;
 import team.far.footing.model.IUserModel;
 import team.far.footing.model.callback.OnLoginListener;
 import team.far.footing.model.callback.OnUserListener;
@@ -155,4 +156,8 @@ public class LoginPresenter {
         LogUtils.e("正在提交验证");
     }
 
+
+    public  void onDestroy(){
+       userModel.unregisterEventHandler();
+    }
 }

@@ -124,4 +124,10 @@ public class RegisterActivity extends BaseActivity implements IRegisterVu, View.
             loginPresenter.VerifyCode(getphone(), getVerifyCode());
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        loginPresenter.onDestroy();
+    }
 }

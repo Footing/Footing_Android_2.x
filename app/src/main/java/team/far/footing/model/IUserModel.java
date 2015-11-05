@@ -120,4 +120,6 @@ public interface IUserModel {
      * @param onUploadHeadPortraitListener ----------文件上传监听
      */
     void uploadHeadPortrait(String filePath, OnUploadListener onUploadHeadPortraitListener);
+
+    void unregisterEventHandler();
 }

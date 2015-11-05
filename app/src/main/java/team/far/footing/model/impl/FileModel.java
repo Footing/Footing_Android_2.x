@@ -46,7 +46,6 @@ public class FileModel implements IFileModel {
     }
 
 
-    private BlockingQueue<String> queue = new LinkedBlockingDeque<>();
 
     public void uploadPic(String filePath, final OnUploadListener onUploadListener) {
         BTPFileResponse response = BmobProFile.getInstance(APP.getContext()).upload(filePath, new UploadListener() {

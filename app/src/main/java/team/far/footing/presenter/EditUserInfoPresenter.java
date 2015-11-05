@@ -24,17 +24,15 @@ public class EditUserInfoPresenter {
 
     private IUserModel userModel;
     private IEditUserInfoVu v;
-    private Userbean userbean;
     private FileModel fileModel;
-    private  UserInfo mUserInfo;
+    private UserInfo mUserInfo;
 
     public EditUserInfoPresenter(IEditUserInfoVu v) {
         this.v = v;
         userModel = UserModel.getInstance();
         fileModel = FileModel.getInstance();
-        userbean = BmobUtils.getCurrentUser();
         getUserInfo();
-        showUserInformation();
+
     }
 
     public void updateUserInformation() {
@@ -104,13 +102,13 @@ public class EditUserInfoPresenter {
     }
 
     public void refreshUserInformation() {
-        userbean = BmobUtils.getCurrentUser();
-        showUserInformation();
+        getUserInfo();
     }
 
     public void showUserInformation() {
         Bitmap bitmap = fileModel.getLocalPic(mUserInfo.getHeadPortraitFileName());
-        v.showUserInformation(mUserInfo, bitmap);
+        if (bitmap != null)
+            v.showUserInformation(mUserInfo, bitmap);
     }
 
     // 解除view的绑定
@@ -124,6 +122,7 @@ public class EditUserInfoPresenter {
             @Override
             public void Success(UserInfo userInfo) {
                 mUserInfo = userInfo;
+                showUserInformation();
             }
 
             @Override

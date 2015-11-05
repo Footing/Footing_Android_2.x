@@ -8,15 +8,18 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 
 import cn.bmob.v3.datatype.BmobFile;
+import team.far.footing.model.IFileModel;
 import team.far.footing.model.IUserModel;
 import team.far.footing.model.bean.UserInfo;
 import team.far.footing.model.callback.OnUploadListener;
 import team.far.footing.model.callback.OnUserInfoListener;
+import team.far.footing.model.callback.OngetUserPicListener;
 import team.far.footing.model.impl.FileModel;
 import team.far.footing.model.impl.UserModel;
 import team.far.footing.ui.activity.EditUserInfoActivity;
 import team.far.footing.ui.vu.IUserInfoVu;
 import team.far.footing.uitl.BmobUtils;
+import team.far.footing.uitl.LogUtils;
 
 /**
  * Created by moi on 2015/8/12.
@@ -26,14 +29,14 @@ public class UserInfoPresenter {
     private IUserInfoVu v;
     private UserInfo mUserInfo;
     private IUserModel userModel;
-    private FileModel fileModel;
+    private IFileModel fileModel;
 
     public UserInfoPresenter(final IUserInfoVu v) {
         this.v = v;
         userModel = UserModel.getInstance();
         fileModel = FileModel.getInstance();
         getUserInfo();
-        showUserInformation();
+
     }
 
     public void updatePic(Uri uri) {
@@ -45,6 +48,7 @@ public class UserInfoPresenter {
                     v.dismissLoading();
                     v.showUpdateSuccess();
                 }
+
                 fileModel.downloadPic(fileName, new com.bmob.btp.callback.DownloadListener() {
 
                     @Override
@@ -81,12 +85,23 @@ public class UserInfoPresenter {
 
     public void refreshUserInformation() {
         getUserInfo();
-        showUserInformation();
+
     }
 
     public void showUserInformation() {
-        Bitmap bitmap = fileModel.getLocalPic(mUserInfo.getHeadPortraitFileName());
-        if (v != null) v.showUserInformation(mUserInfo, bitmap);
+
+        fileModel.getUserPic(mUserInfo, new OngetUserPicListener() {
+            @Override
+            public void onSucess(Bitmap bitmap) {
+                if (v != null) v.showUserInformation(mUserInfo, bitmap);
+            }
+
+            @Override
+            public void onError() {
+                return;
+            }
+        });
+
     }
 
     public void startEditUserInfoActivity(Context context) {
@@ -101,15 +116,38 @@ public class UserInfoPresenter {
     }
 
 
+    public void setUserPic(String filename) {
+
+        fileModel.getUserPic(mUserInfo, new OngetUserPicListener() {
+            @Override
+            public void onSucess(Bitmap bitmap) {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+
+    }
+
+
+    //得到 mUserInfo
     private void getUserInfo() {
         BmobUtils.getCurrentUserInfo(new OnUserInfoListener() {
             @Override
             public void Success(UserInfo userInfo) {
+
                 mUserInfo = userInfo;
+                LogUtils.e(mUserInfo.getNickName());
+                showUserInformation();
+
             }
 
             @Override
             public void Failed(int i, String reason) throws NetworkErrorException {
+                LogUtils.e("failed");
                 getUserInfo();
             }
         });

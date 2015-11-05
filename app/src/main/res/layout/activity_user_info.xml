@@ -68,12 +68,23 @@
     <ScrollView
         android:layout_below="@+id/iv_user_info_bg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"></ScrollView>
+    <!--toolbar下方阴影-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_shadow_height"
+        android:layout_below="@id/iv_user_info_bg"
+        android:background="@drawable/shadow"
+        android:id="@+id/view" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@+id/view"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <!--这里放其他内容，邮箱、经验值、去过的地方之类的-->
 
@@ -229,13 +240,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+
+
     </RelativeLayout>
-    </ScrollView>
-    <!--toolbar下方阴影-->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_shadow_height"
-        android:layout_below="@id/iv_user_info_bg"
-        android:background="@drawable/shadow"/>
 </RelativeLayout>
 

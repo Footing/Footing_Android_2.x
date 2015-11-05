@@ -95,10 +95,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoVu, Toolb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
         ButterKnife.bind(this);
-
-
         initToolbar();
-
         init();
         presenter = new UserInfoPresenter(this);
 
@@ -132,7 +129,7 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoVu, Toolb
             barLayout.setPadding(0, ScreenUtils.getStatusHeight(this), 0, 0);
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        mToolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.ic_home_list_walk));
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.ic_back));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,28 +142,28 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoVu, Toolb
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        // getMenuInflater().inflate(R.menu.menu_user_info, menu);
+         getMenuInflater().inflate(R.menu.menu_user_info, menu);
         return true;
     }
 
     @Override
-    public void showUserInformation(UserInfo userbean, Bitmap bitmap) {
-        if (!(userbean.getNickName() == null)) {
-            mUserName.setText(userbean.getNickName());
+    public void showUserInformation(UserInfo mUserInfo, Bitmap bitmap) {
+        if (!(mUserInfo.getNickName() == null)) {
+            mUserName.setText(mUserInfo.getNickName());
         } else {
             mUserName.setText("未取名");
         }
         if (bitmap != null) {
             mUserPic.setImageBitmap(bitmap);
         }
-        mUserLv.setText("Lv." + LevelUtils.getLevel(userbean.getLevel()));
-        mUserSignature.setText(userbean.getSignature());
-        if (TimeUtils.isToday(userbean.getToday_date())) {
-            if (userbean.getToday_distance() != null) {
-                if (userbean.getToday_distance() > 1000) {
-                    tvMyTodayDistance.setText(new DecimalFormat(".##").format(userbean.getToday_distance() / 1000.0) + " km");
+        mUserLv.setText("Lv." + LevelUtils.getLevel(mUserInfo.getLevel()));
+        mUserSignature.setText(mUserInfo.getSignature());
+        if (TimeUtils.isToday(mUserInfo.getToday_date())) {
+            if (mUserInfo.getToday_distance() != null) {
+                if (mUserInfo.getToday_distance() > 1000) {
+                    tvMyTodayDistance.setText(new DecimalFormat(".##").format(mUserInfo.getToday_distance() / 1000.0) + " km");
                 } else {
-                    tvMyTodayDistance.setText(userbean.getToday_distance() + " m");
+                    tvMyTodayDistance.setText(mUserInfo.getToday_distance() + " m");
                 }
             } else {
                 tvMyTodayDistance.setText("0 m");
@@ -174,13 +171,13 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoVu, Toolb
         } else {
             tvMyTodayDistance.setText("0 m");
         }
-        if (userbean.getAll_distance() > 1000) {
-            tvMyAllDistance.setText(new DecimalFormat(".##").format(userbean.getAll_distance() / 1000.0) + " km");
+        if (mUserInfo.getAll_distance() > 1000) {
+            tvMyAllDistance.setText(new DecimalFormat(".##").format(mUserInfo.getAll_distance() / 1000.0) + " km");
         } else {
-            tvMyAllDistance.setText(userbean.getAll_distance() + " m");
+            tvMyAllDistance.setText(mUserInfo.getAll_distance() + " m");
         }
-        LogUtils.d("下一等级：" + (LevelUtils.getLevel(userbean.getLevel()) + 1) + "下一等级经验： " + (LevelUtils.getLevel(userbean.getLevel()) + 1) * (LevelUtils.getLevel(userbean.getLevel()) + 1) * 200 + 40);
-        tvMyExp.setText(userbean.getLevel() + " / " + ((LevelUtils.getLevel(userbean.getLevel()) + 1) * (LevelUtils.getLevel(userbean.getLevel()) + 1) * 200 + 40));
+        LogUtils.d("下一等级：" + (LevelUtils.getLevel(mUserInfo.getLevel()) + 1) + "下一等级经验： " + (LevelUtils.getLevel(mUserInfo.getLevel()) + 1) * (LevelUtils.getLevel(mUserInfo.getLevel()) + 1) * 200 + 40);
+        tvMyExp.setText(mUserInfo.getLevel() + " / " + ((LevelUtils.getLevel(mUserInfo.getLevel()) + 1) * (LevelUtils.getLevel(mUserInfo.getLevel()) + 1) * 200 + 40));
         tvMyEmail.setText(BmobUtils.getCurrentUser().getEmail());
     }
 
@@ -225,9 +222,9 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoVu, Toolb
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
-          /*  case R.id.action_editor:
+          case R.id.action_editor:
                 presenter.startEditUserInfoActivity(this);
-                break;*/
+                break;
         }
         return false;
     }
@@ -294,6 +291,6 @@ public class UserInfoActivity extends BaseActivity implements IUserInfoVu, Toolb
 
     @Override
     public Activity getContext() {
-        return getContext();
+        return UserInfoActivity.this;
     }
 }

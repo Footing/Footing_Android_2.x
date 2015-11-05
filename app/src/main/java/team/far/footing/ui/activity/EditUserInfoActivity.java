@@ -87,9 +87,9 @@ public class EditUserInfoActivity extends BaseActivity implements IEditUserInfoV
     }
 
     private void initToolbar() {
-        mToolbar.setTitle(getResources().getString(R.string.home_fab_search));
+        mToolbar.setTitle(getResources().getString(R.string.edit_info));
         setSupportActionBar(mToolbar);
-        mToolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.ic_home_list_position));
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.ic_back));
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +112,7 @@ public class EditUserInfoActivity extends BaseActivity implements IEditUserInfoV
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_edit_user_info, menu);
         return true;
     }
 
@@ -213,7 +214,9 @@ public class EditUserInfoActivity extends BaseActivity implements IEditUserInfoV
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
-
+            case R.id.action_editor_complete:
+                presenter.updateUserInformation();
+                break;
         }
         return false;
     }

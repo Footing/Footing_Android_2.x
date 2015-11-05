@@ -55,6 +55,7 @@
     <string name="register_dialog_cancel">注册取消</string>
     <string name="verify_btn_ok">确定</string>
 
+    <string name="edit_info">修改资料</string>
 
     <!--activity-->
     <string name="activity_dialog">提示</string>

@@ -43,6 +43,8 @@ public class UserModel implements IUserModel {
 
     public static final UserModel instance = new UserModel();
 
+    private   EventHandler eventHandler;
+
 
     final public static UserModel getInstance() {
         return instance;
@@ -177,6 +179,13 @@ public class UserModel implements IUserModel {
                                                     public void onSuccess() {
                                                         final UserInfo userInfo = new UserInfo();
                                                         userInfo.setUsername(phone);
+                                                        userInfo.setToday_distance(0);
+                                                        userInfo.setAll_distance(0);
+                                                        userInfo.setIsAuth(1);
+                                                        userInfo.setToday_date("");
+                                                        userInfo.setPraiseCount(0);
+                                                        userInfo.setIs_finish_today(0);
+                                                        userInfo.setLevel(1);
                                                         userInfo.setFriendId(friends.getObjectId());
                                                         userInfo.setUserbean(BmobUtils.getCurrentUser());
                                                         userInfo.save(APP.getContext(), new SaveListener() {
@@ -256,7 +265,7 @@ public class UserModel implements IUserModel {
     @Override
     public void register(final String phone, final String password, final String nickname, final OnUserListener onUserListener) {
 
-        final EventHandler eventHandler = new EventHandler() {
+        eventHandler = new EventHandler() {
             @Override
             public void afterEvent(final int event, final int result, Object data) {
 
@@ -278,6 +287,13 @@ public class UserModel implements IUserModel {
                                                     public void onSuccess() {
                                                         final UserInfo userInfo = new UserInfo();
                                                         userInfo.setUsername(phone);
+                                                        userInfo.setToday_distance(0);
+                                                        userInfo.setAll_distance(0);
+                                                        userInfo.setIsAuth(1);
+                                                        userInfo.setToday_date("");
+                                                        userInfo.setPraiseCount(0);
+                                                        userInfo.setIs_finish_today(0);
+                                                        userInfo.setLevel(1);
                                                         userInfo.setNickName(nickname);
                                                         userInfo.setFriendId(friends.getObjectId());
                                                         userInfo.setUserbean(BmobUtils.getCurrentUser());
@@ -416,6 +432,11 @@ public class UserModel implements IUserModel {
             }
         });
 
+    }
+
+    @Override
+    public void unregisterEventHandler() {
+        SMSSDK.unregisterEventHandler(eventHandler);
     }
 
 
