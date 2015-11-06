@@ -28,6 +28,7 @@ public class MapModel implements IMapModel {
         return instance;
     }
 
+
     @Override
     public void save_map_finish(UserInfo userInfo, String map_url, String map_file_name, List<String> map_list,
                                 String all_time, String all_distance, String start_time, String city, String address, String street,

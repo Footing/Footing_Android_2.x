@@ -30,7 +30,7 @@ public class BmobUtils {
 
 
     public static void getCurrentUserInfo(final OnUserInfoListener onUserInfoListener) {
-        if (userInfo == null) {
+
 
             Userbean currentuser = getCurrentUser();
             BmobQuery<UserInfo> query = new BmobQuery<UserInfo>();
@@ -54,9 +54,7 @@ public class BmobUtils {
                     }
                 }
             });
-        } else {
-            onUserInfoListener.Success(userInfo);
-        }
+
     }
 
     /**

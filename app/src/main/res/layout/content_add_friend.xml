@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="true"
+    android:background="@color/white"
+    tools:context=".ui.activity.FriendActivity">
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_add_search_layout"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+        <EditText
+            android:id="@+id/edit_addfriend"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_toLeftOf="@+id/bt_query"
+            android:layout_marginLeft="24dp"
+            android:textSize="16sp"
+            android:textColorHint="@color/divider_color"
+            android:layout_height="wrap_content"
+            android:hint="查询"
+            android:textColor="@color/home_fab_item_dark_search" />
+
+        <ImageView
+            android:id="@+id/bt_query"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="12dp"
+            android:src="@mipmap/ic_home_list_walk"
+            android:layout_marginRight="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@+id/edit_addfriend"
+            android:text="查询" />
+
+    </LinearLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_add_search_layout">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/firends_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+</RelativeLayout>
+

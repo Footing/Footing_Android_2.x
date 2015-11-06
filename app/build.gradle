@@ -1,9 +1,7 @@
 apply plugin: 'com.android.application'
-
+def Properties props = new Properties()
+props.load(new FileInputStream(file("signing.properties")))
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
-
     defaultConfig {
         applicationId "team.far.footing"
         minSdkVersion 15
@@ -11,10 +9,37 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    signingConfigs {
+        debug {
+            keyAlias 'db'
+            keyPassword 'footing'
+        }
+
+        release {
+            keyAlias props['KEY_ALIAS']
+            keyPassword props['KEY_PASSWORD']
+            storeFile file(props['KEYSTORE_FILE'])
+            storePassword props['KEYSTORE_PASSWORD']
+        }
+    }
+
+
     buildTypes {
+        debug {
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
+        }
+
         release {
             debuggable true
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -22,33 +47,37 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    //bmob-sdk ：Bmob的android sdk包
+    //bmob-im：bmob的im包，以下两个配置是im功能所需
+    //okhttp（选填）：为解决弱网情况下SDK请求失败及响应慢的问题，自`V3.4.3版本`开始使用`okhttp`优化SDK的网络框架。
+    //友盟
+    compile project(':sMSSDK')
+    compile files('libs/easemobchat_2.2.3.jar')
+    //fab
+    //log
+    //为了4.4状态栏颜色
+    //高德地图
+    // compile files('libs/Android_Location_V1.3.3.jar')
+    compile files('libs/AMap_3DMap_v2.6.0_20150914.jar')
+    compile files('libs/AMap_Location_v1.4.1_20150917.jar')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
-    //bmob-sdk ：Bmob的android sdk包
     compile 'cn.bmob.android:bmob-push:0.6'
-    //bmob-im：bmob的im包，以下两个配置是im功能所需
     compile 'cn.bmob.android:bmob-sdk:3.4.3'
-    //okhttp（选填）：为解决弱网情况下SDK请求失败及响应慢的问题，自`V3.4.3版本`开始使用`okhttp`优化SDK的网络框架。
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.squareup.okio:okio:1.4.0'
     compile 'com.jakewharton:butterknife:7.0.1'
-    //友盟
     compile 'com.umeng.analytics:analytics:latest.integration'
-    compile project(':sMSSDK')
     compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
-    compile files('libs/easemobchat_2.2.3.jar')
-    //fab
     compile 'com.github.wangjiegulu:RapidFloatingActionButton:1.0.3'
     compile 'com.github.wangjiegulu:AndroidBucket:1.0.4'
     compile 'com.nineoldandroids:library:2.4.0'
-    //log
     compile 'com.orhanobut:logger:1.11'
-    //为了4.4状态栏颜色
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-    //高德地图
-    compile files('libs/Android_Location_V1.3.3.jar')
-    compile files('libs/AMap_3DMap_v2.6.0_20150914.jar')
-    compile files('libs/AMap_Location_v1.4.1_20150917.jar')
     compile 'com.android.support:cardview-v7:23.0.1'
     compile 'me.drakeet.materialdialog:library:1.2.2'
+    compile 'com.android.support:design:23.0.1'
+    compile 'com.balysv:material-ripple:1.0.2'
+    compile 'com.afollestad:material-dialogs:0.7.5.5'
+    compile 'org.hybridsquad.android.photocropper:library:2.1.0'
 }

@@ -16,6 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import team.far.footing.R;
 import team.far.footing.app.APP;
+import team.far.footing.ui.activity.FriendsActivity;
 import team.far.footing.ui.activity.LoginActivity;
 import team.far.footing.uitl.BmobUtils;
 
@@ -153,11 +154,21 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (v == mRecentlyView) {
             Logger.d("mRecently has clicked");
         }
-        if (id == R.id.home_lin_header) {
-            Intent intent = new Intent(mContext, LoginActivity.class);
-            mContext.startActivity(intent);
 
+        switch (id) {
+            case R.id.home_lin_header:
+                Intent intent = new Intent(mContext, LoginActivity.class);
+                mContext.startActivity(intent);
+                break;
+            case R.id.home_iv_friends:
+                mContext.startActivity(new Intent(mContext, FriendsActivity.class));
+                break;
+            case R.id.home_iv_broadcast:
+                break;
+            case R.id.home_iv_rooms:
+                break;
         }
+
     }
 
     class HomeLoginViewHolder extends RecyclerView.ViewHolder {
