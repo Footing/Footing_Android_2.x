@@ -1,73 +1,94 @@
 package team.far.footing.ui.activity;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import team.far.footing.R;
 import team.far.footing.app.BaseActivity;
-import team.far.footing.model.bean.UserInfo;
-import team.far.footing.model.bean.Userbean;
-import team.far.footing.model.callback.OnUserInfoListener;
-import team.far.footing.model.callback.OnUserListener;
-import team.far.footing.model.impl.UserModel;
-import team.far.footing.uitl.BmobUtils;
-import team.far.footing.uitl.LogUtils;
+import team.far.footing.ui.fragment.HomeFragment;
 
 public class HomeActivity extends BaseActivity {
-
-    @InjectView(R.id.toolbar)
-    Toolbar mToolbar;
-    @InjectView(R.id.tv_hello)
-    TextView tvHello;
+    public static final String ARG_REVEAL_START_LOCATION = "reveal_start_location";
+    public static final String MAP_ACTION_TYPE = "action_type";
+    public static final String MAP_WALK = "walk";
+    public static final String MAP_DRAW = "draw";
+    private long mExitTime;
+    private boolean mIsPendingIntroAnimation;
+    private HomeFragment mHomeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        ButterKnife.inject(this);
-
-        initToolbar();
-        initFonts();
-
-
+        ButterKnife.bind(this);
+        if (savedInstanceState == null) {
+            setupHomeFragment();
+            mIsPendingIntroAnimation = true;
+        }
     }
 
-    private void initFonts() {
-        Typeface robotoLight = Typeface.createFromAsset(getAssets(),"fonts/Roboto-Light.ttf");
-        tvHello.setTypeface(robotoLight);
+
+    /**
+     * 主界面的内容区域{@link HomeFragment}
+     */
+    private void setupHomeFragment() {
+        mHomeFragment = new HomeFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.home_container, mHomeFragment)
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
     }
 
-    private void initToolbar() {
-        mToolbar.setTitle(getResources().getString(R.string.app_name));
-        setSupportActionBar(mToolbar);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_home, menu);
+        MenuItem userItem = menu.findItem(R.id.home_menu_user);
+        userItem.setActionView(R.layout.layout_home_menu_user);
+        if(mIsPendingIntroAnimation){
+            mIsPendingIntroAnimation = false;
+            mHomeFragment.startIntroAnimation(userItem.getActionView());
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.home_menu_user:
+                break;
+            case R.id.home_menu_help:
+                break;
+            case R.id.home_menu_feedback:
+                break;
+            case R.id.home_menu_setting:
+                break;
+            case R.id.home_menu_about:
+                break;
         }
-
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                mExitTime = System.currentTimeMillis();
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
 }

@@ -31,5 +31,7 @@ public interface OnLoginListener {
      *               ((Throwable) data).printStackTrace();
      *               }
      */
-    void afterEvent(int event, int result);
+    void onSuccess();
+    void onProgress(int progress, String status);
+    void onError(int code, String message);
 }

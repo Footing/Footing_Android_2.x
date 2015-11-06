@@ -6,7 +6,7 @@ package team.far.footing.model.callback;
 public interface OnUserListener {
 
     void Success();
-
     void Failed(int i, String reason);
+    void onProgress(int i, String s);
 
 }
