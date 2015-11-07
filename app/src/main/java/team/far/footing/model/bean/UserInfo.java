@@ -1,12 +1,14 @@
 package team.far.footing.model.bean;
 
+import java.io.Serializable;
+
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobRelation;
 
 /**
  * Created by luoyy on 2015/10/7 0007.
  */
-public class UserInfo extends BmobObject {
+public class UserInfo extends BmobObject implements Serializable {
 
 
     //用于保存 一个用户对应一个Friends中的objectId

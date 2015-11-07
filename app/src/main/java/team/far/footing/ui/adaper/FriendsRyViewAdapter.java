@@ -1,6 +1,8 @@
 package team.far.footing.ui.adaper;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import team.far.footing.app.APP;
 import team.far.footing.model.bean.UserInfo;
 import team.far.footing.model.callback.OngetUserPicListener;
 import team.far.footing.model.impl.FileModel;
+import team.far.footing.ui.activity.FriendInfoActivity;
 import team.far.footing.ui.widget.CircleImageView;
 
 /**
@@ -42,7 +45,11 @@ public class FriendsRyViewAdapter extends RecyclerView.Adapter<FriendsRyViewAdap
         holder.ripple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(v.getContext(), FriendInfoActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user", list.get(position));
+                intent.putExtras(bundle);
+                v.getContext().startActivity(intent);
             }
         });
         holder.tv_name.setText(list.get(position).getNickName());

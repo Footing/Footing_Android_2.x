@@ -87,6 +87,7 @@
             android:theme="@style/AppTheme"></activity>
         <activity android:name=".ui.activity.EditUserInfoActivity"/>
         <activity android:name=".ui.activity.UserInfoActivity"/>
+        <activity android:name=".ui.activity.FriendInfoActivity"/>
 
     </application>
 
