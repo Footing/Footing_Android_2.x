@@ -9,13 +9,17 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easemob.chat.EMMessage;
+
 import butterknife.ButterKnife;
 import team.far.footing.R;
 import team.far.footing.app.BaseActivity;
+import team.far.footing.presenter.HomePresenter;
 import team.far.footing.ui.fragment.HomeFragment;
+import team.far.footing.ui.vu.IHomeVu;
 import team.far.footing.uitl.LogUtils;
 
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements IHomeVu {
     public static final String ARG_REVEAL_START_LOCATION = "reveal_start_location";
     public static final String MAP_ACTION_TYPE = "action_type";
     public static final String MAP_WALK = "walk";
@@ -24,6 +28,10 @@ public class HomeActivity extends BaseActivity {
     private long mExitTime;
     private boolean mIsPendingIntroAnimation;
     private HomeFragment mHomeFragment;
+
+
+    private HomePresenter homePresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +42,9 @@ public class HomeActivity extends BaseActivity {
             setupHomeFragment();
             mIsPendingIntroAnimation = true;
         }
-        TextView textView = new TextView(this);
-    }
 
+        homePresenter = new HomePresenter(this, this);
+    }
 
     /**
      * 主界面的内容区域{@link HomeFragment}
@@ -49,7 +57,6 @@ public class HomeActivity extends BaseActivity {
                 .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,4 +107,9 @@ public class HomeActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void getNewMsg(EMMessage msg) {
+        //写得到了消息的代码吧
+        showdialog(msg.toString());
+    }
 }

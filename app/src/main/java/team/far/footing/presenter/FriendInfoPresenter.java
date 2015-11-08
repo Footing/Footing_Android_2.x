@@ -72,7 +72,6 @@ public class FriendInfoPresenter {
                 Message msg = myHandler.obtainMessage();
                 msg.what = 0x0001;
                 myHandler.sendMessage(msg);
-
             }
 
             @Override
