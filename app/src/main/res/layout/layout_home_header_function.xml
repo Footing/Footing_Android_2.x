@@ -20,12 +20,26 @@
             android:paddingBottom="18dp"
             android:paddingTop="28dp">
 
-            <ImageView
-                android:id="@+id/home_iv_broadcast"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/ic_home_broadcast" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/home_iv_broadcast"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_home_broadcast" />
+
+                <View
+                    android:id="@+id/home_view_circle"
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_alignRight="@id/home_iv_broadcast"
+                    android:background="@drawable/circle_news"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -108,6 +122,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:background="@color/divider_color"/>
+        android:background="@color/divider_color" />
 
 </LinearLayout>

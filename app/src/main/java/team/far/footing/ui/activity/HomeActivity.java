@@ -111,5 +111,6 @@ public class HomeActivity extends BaseActivity implements IHomeVu {
     public void getNewMsg(EMMessage msg) {
         //写得到了消息的代码吧
         showdialog(msg.toString());
+        mHomeFragment.getNewMsg(msg);
     }
 }

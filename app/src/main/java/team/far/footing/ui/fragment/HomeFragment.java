@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
+import com.easemob.chat.EMMessage;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
@@ -229,5 +230,10 @@ public class HomeFragment extends Fragment implements RapidFloatingActionContent
     public void onRFACItemIconClick(int position, RFACLabelItem rfacLabelItem) {
         onRfabClicked(position);
         mRfabHelper.toggleContent();
+    }
+
+
+    public void getNewMsg(EMMessage msg) {
+        mHomeAdapter.showNewMsg();
     }
 }

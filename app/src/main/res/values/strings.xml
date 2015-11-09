@@ -65,5 +65,6 @@
     <string name="title_activity_verify">VerifyActivity</string>
     <string name="title_activity_friend">FriendActivity</string>
     <string name="title_activity_add_friend">AddFriendActivity</string>
+    <string name="title_activity_message">MessageActivity</string>
 
 </resources>

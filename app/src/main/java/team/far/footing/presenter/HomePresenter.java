@@ -10,10 +10,11 @@ import com.easemob.chat.EMMessage;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
-import java.util.concurrent.BrokenBarrierException;
 
 import team.far.footing.model.IMessageModel;
+import team.far.footing.model.IRealm;
 import team.far.footing.model.impl.MessageModel;
+import team.far.footing.model.impl.RModel;
 import team.far.footing.ui.activity.HomeActivity;
 import team.far.footing.ui.vu.IHomeVu;
 import team.far.footing.uitl.LogUtils;
@@ -26,6 +27,7 @@ public class HomePresenter {
     private IHomeVu mHomeVu;
     private IMessageModel messageModel;
     private Handler handler;
+    private IRealm mIRealm;
 
     //新来的单个消息
     private EMMessage mNewMsg;
@@ -34,6 +36,7 @@ public class HomePresenter {
     public HomePresenter(IHomeVu mHomeVu, HomeActivity activity) {
         this.mHomeVu = mHomeVu;
         messageModel = MessageModel.getInstance();
+        mIRealm = RModel.getInstances();
         startListenMsg();
         handler = new MyHandler(activity);
     }
@@ -46,6 +49,11 @@ public class HomePresenter {
                                                 switch (emNotifierEvent.getEvent()) {
                                                     case EventNewMessage: // 接收新消息
                                                         mNewMsg = (EMMessage) emNotifierEvent.getData();
+                                                        LogUtils.e("新消息来了");
+                                                        //把消息保存到realm
+                                                        mIRealm.setEMMessage(mNewMsg);
+                                                        LogUtils.e("新消息保存了就不做了吗？");
+
                                                         Message message = handler.obtainMessage();
                                                         message.what = 0x0001;
                                                         handler.sendMessage(message);

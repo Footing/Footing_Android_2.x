@@ -15,7 +15,6 @@ import com.orhanobut.logger.Logger;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import team.far.footing.R;
-import team.far.footing.app.APP;
 import team.far.footing.ui.activity.FriendsActivity;
 import team.far.footing.ui.activity.LoginActivity;
 import team.far.footing.uitl.BmobUtils;
@@ -46,8 +45,19 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
      * 最近列表
      */
     public static final int TYPE_RECENTLY = 3;
+    @Bind(R.id.home_iv_broadcast)
+    ImageView homeIvBroadcast;
+    @Bind(R.id.home_view_circle)
+    View homeViewCircle;
+    @Bind(R.id.home_iv_friends)
+    ImageView homeIvFriends;
+    @Bind(R.id.home_iv_rooms)
+    ImageView homeIvRooms;
+    @Bind(R.id.home_layout_function)
+    LinearLayout homeLayoutFunction;
 
     private Context mContext;
+    private HomeFunctionViewHolder holder;
 
     /**
      * 用户是否登陆
@@ -97,7 +107,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             return holder;
         } else if (viewType == TYPE_FUNCTION) {
             final View view = inflater.inflate(R.layout.layout_home_header_function, parent, false);
-            HomeFunctionViewHolder holder = new HomeFunctionViewHolder(view);
+            holder = new HomeFunctionViewHolder(view);
             holder.mIvBroadcast.setOnClickListener(this);
             holder.mIvFriends.setOnClickListener(this);
             holder.miVRooms.setOnClickListener(this);
@@ -164,11 +174,19 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 mContext.startActivity(new Intent(mContext, FriendsActivity.class));
                 break;
             case R.id.home_iv_broadcast:
+                holder.mCircleView.setVisibility(View.GONE);
+                //点击查看新消息
+
                 break;
             case R.id.home_iv_rooms:
                 break;
         }
 
+    }
+
+
+    public void showNewMsg() {
+        holder.mCircleView.setVisibility(View.VISIBLE);
     }
 
     class HomeLoginViewHolder extends RecyclerView.ViewHolder {
@@ -191,6 +209,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         ImageView mIvFriends;
         @Bind(R.id.home_iv_rooms)
         ImageView miVRooms;
+        @Bind(R.id.home_view_circle)
+        View mCircleView;
 
         public HomeFunctionViewHolder(View itemView) {
             super(itemView);

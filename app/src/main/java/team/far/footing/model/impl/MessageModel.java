@@ -14,6 +14,7 @@ import com.easemob.chat.TextMessageBody;
 import com.easemob.chat.VoiceMessageBody;
 
 import java.io.File;
+import java.util.Date;
 
 import cn.bmob.v3.listener.FindListener;
 import team.far.footing.app.APP;
@@ -78,9 +79,11 @@ public class MessageModel implements IMessageModel {
         EMMessage message = EMMessage.createSendMessage(EMMessage.Type.TXT);
         //如果是群聊，设置chattype,默认是单聊
         message.setChatType(EMMessage.ChatType.Chat);
+
         //设置消息body
         TextMessageBody txtBody = new TextMessageBody(content);
         message.addBody(txtBody);
+        message.setMsgTime(new Date().getTime());
         //设置接收人
         message.setReceipt(userInfo.getUsername());
         //把消息加入到此会话对象中
