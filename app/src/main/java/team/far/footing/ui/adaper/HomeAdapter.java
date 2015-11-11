@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import team.far.footing.R;
 import team.far.footing.ui.activity.FriendsActivity;
 import team.far.footing.ui.activity.LoginActivity;
+import team.far.footing.ui.activity.MessageActivity;
 import team.far.footing.uitl.BmobUtils;
 
 /**
@@ -176,7 +177,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             case R.id.home_iv_broadcast:
                 holder.mCircleView.setVisibility(View.GONE);
                 //点击查看新消息
-
+                mContext.startActivity(new Intent(mContext, MessageActivity.class));
                 break;
             case R.id.home_iv_rooms:
                 break;

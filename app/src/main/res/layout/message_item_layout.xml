@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/message_img"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:src="@drawable/circle_news"/>
+
+    <TextView
+        android:layout_toRightOf="@+id/message_img"
+        android:textColor="@color/home_fab_color"
+        android:id="@+id/message_tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="我是名字"/>
+
+
+    <TextView
+        android:layout_toRightOf="@+id/message_img"
+        android:textColor="@color/home_fab_color"
+        android:id="@+id/message_tv_content"
+        android:layout_below="@+id/message_tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我是内容"/>
+
+</RelativeLayout>

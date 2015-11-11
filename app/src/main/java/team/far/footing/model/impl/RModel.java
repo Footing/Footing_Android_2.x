@@ -46,7 +46,7 @@ public class RModel implements IRealm {
     public List<Message> getMessMsg() {
         mRealm = Realm.getInstance(APP.getContext());
         RealmResults<Message> result = mRealm.where(Message.class).findAll();
-        result.sort("age");
+        result.sort("date");
 
         List<Message> list = result.subList(0, result.size());
         return list;

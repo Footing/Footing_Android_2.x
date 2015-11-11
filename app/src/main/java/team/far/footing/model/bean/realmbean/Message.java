@@ -7,10 +7,15 @@ import io.realm.RealmObject;
  */
 public class Message extends RealmObject {
 
+    public final static int UNREAD = 0x0000;
+    public final static int READ = 0x0001;
+
     private String sendUser;
     private String getUser;
     private String content;
     private long date;
+    //默认
+    private int isRead = UNREAD;
 
     public long getDate() {
         return date;
