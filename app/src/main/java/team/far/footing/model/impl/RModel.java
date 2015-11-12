@@ -5,6 +5,7 @@ import com.easemob.chat.EMMessage;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import team.far.footing.app.APP;
 import team.far.footing.model.IRealm;
@@ -26,29 +27,32 @@ public class RModel implements IRealm {
     }
 
     @Override
-    public void setEMMessage(EMMessage message) {
+    public void setAddFriendMessage(EMMessage message) {
         mRealm = Realm.getInstance(APP.getContext());
 
         mRealm.beginTransaction();
-
         LogUtils.e("在Realm中保存1");
         Message msg = mRealm.createObject(Message.class);
         msg.setContent(message.getBody().toString());
         msg.setDate(message.getMsgTime());
         msg.setGetUser(message.getTo());
         msg.setSendUser(message.getFrom());
+        msg.setType(Message.SYSTEM);
         LogUtils.e("在Realm中保存2");
-
         mRealm.commitTransaction();
     }
 
     @Override
-    public List<Message> getMessMsg() {
+    public List<Message> getSyStemMessMsg() {
         mRealm = Realm.getInstance(APP.getContext());
-        RealmResults<Message> result = mRealm.where(Message.class).findAll();
+        //   RealmResults<Message> result = mRealm.where(Message.class).findAll();
+        //    result.sort("date");
+        RealmQuery<Message> query = mRealm.where(Message.class);
+        query.equalTo("type", Message.SYSTEM);
+        RealmResults<Message> result = query.findAll();
         result.sort("date");
-
         List<Message> list = result.subList(0, result.size());
+
         return list;
     }
 }

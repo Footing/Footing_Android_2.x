@@ -10,12 +10,34 @@ public class Message extends RealmObject {
     public final static int UNREAD = 0x0000;
     public final static int READ = 0x0001;
 
+
+    public final static int CHAT = 0x0002;
+    public final static int SYSTEM = 0x0003;
     private String sendUser;
     private String getUser;
     private String content;
     private long date;
     //默认
     private int isRead = UNREAD;
+    private int type;
+
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public int getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(int isRead) {
+        this.isRead = isRead;
+    }
+
 
     public long getDate() {
         return date;

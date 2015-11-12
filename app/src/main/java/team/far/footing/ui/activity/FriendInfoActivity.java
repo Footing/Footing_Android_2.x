@@ -1,5 +1,6 @@
 package team.far.footing.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,7 +22,6 @@ import butterknife.ButterKnife;
 import team.far.footing.R;
 import team.far.footing.app.BaseActivity;
 import team.far.footing.model.bean.UserInfo;
-import team.far.footing.model.bean.Userbean;
 import team.far.footing.presenter.FriendInfoPresenter;
 import team.far.footing.ui.vu.IFriendInfoVu;
 import team.far.footing.ui.widget.CircleImageView;
@@ -78,6 +78,8 @@ public class FriendInfoActivity extends BaseActivity implements IFriendInfoVu, V
     TextView btnAddFriend;
     @Bind(R.id.tv_friend_today_distance_title)
     TextView tvFriendTodayDistanceTitle;
+    @Bind(R.id.btn_chat)
+    TextView btnChat;
 
     private FriendInfoPresenter presenter;
 
@@ -87,7 +89,7 @@ public class FriendInfoActivity extends BaseActivity implements IFriendInfoVu, V
         setContentView(R.layout.activity_friend_info);
         ButterKnife.bind(this);
 
-        presenter = new FriendInfoPresenter(this, (UserInfo) getIntent().getSerializableExtra("user"),FriendInfoActivity.this);
+        presenter = new FriendInfoPresenter(this, (UserInfo) getIntent().getSerializableExtra("user"), FriendInfoActivity.this);
         presenter.initView();
         initToolbar();
         init();
@@ -95,6 +97,7 @@ public class FriendInfoActivity extends BaseActivity implements IFriendInfoVu, V
 
     private void init() {
         btnFriendSignature.setOnClickListener(this);
+        btnChat.setOnClickListener(this);
     }
 
     @Override
@@ -275,6 +278,9 @@ public class FriendInfoActivity extends BaseActivity implements IFriendInfoVu, V
                 if (tvFriendInfoFriendSignature.getText() != null) {
                     new MaterialDialog.Builder(this).backgroundColor(getResources().getColor(R.color.white)).content(tvFriendInfoFriendSignature.getText()).theme(Theme.LIGHT).show();
                 }
+                break;
+            case R.id.btn_chat:
+                Intent intent = new Intent(FriendInfoActivity.this, ChatActivity.class);
                 break;
 
         }

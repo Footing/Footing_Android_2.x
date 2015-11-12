@@ -53,15 +53,27 @@ public class MessageActivity extends BaseActivity implements IMessageVu {
                         .setAction("Action", null).show();
             }
         });
-
         msgRyView.setLayoutManager(new LinearLayoutManager(this));
-        msgRyView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.HORIZONTAL_LIST));
-
-
+        msgRyView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL_LIST));
     }
 
     @Override
     public void show(MessageAdapter adapter) {
         msgRyView.setAdapter(adapter);
+    }
+
+    @Override
+    public void addFriendSucess() {
+        showdialog("成功添加好友");
+    }
+
+    @Override
+    public void addFriendFail(int i, String reason) {
+        showdialog("添加好友失败"+"\n"+reason);
+    }
+
+    @Override
+    public void addFriending() {
+        showdialog("正在添加好友，请稍等...");
     }
 }

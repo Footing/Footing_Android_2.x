@@ -1,23 +1,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="team.far.footing.ui.activity.UserInfoActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="team.far.footing.ui.activity.UserInfoActivity">
 
     <ImageView
         android:id="@+id/iv_friend_info_bg"
         android:layout_width="match_parent"
         android:layout_height="216dp"
         android:background="@color/primary_color"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop" />
 
     <FrameLayout
         android:id="@+id/friend_info_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include layout="@layout/layout_toolbar_transparent"/>
+        <include layout="@layout/layout_toolbar_transparent" />
 
     </FrameLayout>
 
@@ -36,7 +36,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="60dp"
             android:scaleType="fitCenter"
-            android:src="@mipmap/ic_home_broadcast"/>
+            android:src="@mipmap/ic_home_broadcast" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                tools:text="Lv.5"/>
+                tools:text="Lv.5" />
 
             <TextView
                 android:id="@+id/tv_friend_info_user_name"
@@ -59,7 +59,7 @@
                 android:layout_marginLeft="4dp"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                tools:text="哔啪哩吧啦"/>
+                tools:text="哔啪哩吧啦" />
 
         </LinearLayout>
 
@@ -92,7 +92,7 @@
                     android:layout_marginTop="16dp"
                     android:text="个性签名"
                     android:textColor="@color/primary_text"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_friend_info_friend_signature"
@@ -108,7 +108,7 @@
                     android:maxLines="1"
                     android:textColor="@color/secondary_text"
                     android:textSize="16sp"
-                    tools:text="有些事，我都已忘记，但是我现在还记得，在一个晚上，我的母亲问我"/>
+                    tools:text="有些事，我都已忘记，但是我现在还记得，在一个晚上，我的母亲问我" />
 
             </RelativeLayout>
 
@@ -117,7 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
                 android:layout_below="@+id/btn_friend_signature"
-                android:background="@color/background_material_light"/>
+                android:background="@color/background_material_light" />
 
             <TextView
                 android:id="@+id/tv_friend_today_distance_title"
@@ -129,7 +129,7 @@
                 android:layout_marginTop="16dp"
                 android:text="今日路程"
                 android:textColor="@color/primary_text"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_friend_today_distance"
@@ -140,14 +140,14 @@
                 android:layout_marginRight="24dp"
                 android:textColor="@color/secondary_text"
                 android:textSize="16sp"
-                tools:text="100m"/>
+                tools:text="100m" />
 
             <View
                 android:id="@+id/divider_friend_info_2"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_below="@+id/tv_friend_today_distance_title"
-                android:background="@color/background_material_light"/>
+                android:background="@color/background_material_light" />
 
             <TextView
                 android:id="@+id/tv_friend_all_distance_title"
@@ -159,7 +159,7 @@
                 android:layout_marginTop="16dp"
                 android:text="总路程"
                 android:textColor="@color/primary_text"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_friend_all_distance"
@@ -170,44 +170,44 @@
                 android:layout_marginRight="24dp"
                 android:textColor="@color/secondary_text"
                 android:textSize="16sp"
-                tools:text="100m"/>
+                tools:text="100m" />
 
             <View
                 android:id="@+id/divider_friend_info_3"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_below="@+id/tv_friend_all_distance_title"
-                android:background="@color/background_material_light"/>
+                android:background="@color/background_material_light" />
 
-           <!-- <TextView
-                android:id="@+id/tv_friend_footing_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/divider_friend_info_3"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginTop="16dp"
-                android:text="足迹"
-                android:textColor="@color/primary_text"
-                android:textSize="16sp"/>
+            <!-- <TextView
+                 android:id="@+id/tv_friend_footing_title"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@+id/divider_friend_info_3"
+                 android:layout_marginBottom="16dp"
+                 android:layout_marginLeft="24dp"
+                 android:layout_marginTop="16dp"
+                 android:text="足迹"
+                 android:textColor="@color/primary_text"
+                 android:textSize="16sp"/>
 
-            <TextView
-                android:id="@+id/tv_friend_footing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/tv_friend_footing_title"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="24dp"
-                android:textColor="@color/secondary_text"
-                android:textSize="16sp"
-                android:text="查看Ta的足迹"/>-->
+             <TextView
+                 android:id="@+id/tv_friend_footing"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignBottom="@+id/tv_friend_footing_title"
+                 android:layout_alignParentRight="true"
+                 android:layout_marginRight="24dp"
+                 android:textColor="@color/secondary_text"
+                 android:textSize="16sp"
+                 android:text="查看Ta的足迹"/>-->
 
             <View
                 android:id="@+id/divider_friend_info_4"
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
                 android:layout_below="@+id/divider_friend_info_3"
-                android:background="@color/background_material_light"/>
+                android:background="@color/background_material_light" />
 
             <TextView
                 android:id="@+id/tv_friend_email_title"
@@ -219,7 +219,7 @@
                 android:layout_marginTop="16dp"
                 android:text="邮箱"
                 android:textColor="@color/primary_text"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_friend_email"
@@ -230,24 +230,35 @@
                 android:layout_marginRight="24dp"
                 android:textColor="@color/secondary_text"
                 android:textSize="16sp"
-                tools:text="896001088@qq.com"/>
+                tools:text="896001088@qq.com" />
 
             <View
                 android:id="@+id/divider_friend_info_5"
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
                 android:layout_below="@+id/tv_friend_email_title"
-                android:background="@color/background_material_light"/>
+                android:background="@color/background_material_light" />
 
             <TextView
-                android:text="加载中..."
-                android:textColor="@color/home_fab_item_dark_search"
-                android:textSize="16sp"
-                android:gravity="center"
-                android:layout_below="@+id/divider_friend_info_5"
                 android:id="@+id/btn_add_friend"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"/>
+                android:layout_height="48dp"
+                android:layout_below="@+id/divider_friend_info_5"
+                android:gravity="center"
+                android:text="加载中..."
+                android:textColor="@color/home_fab_item_dark_search"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/btn_chat"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_below="@+id/btn_add_friend"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/send_message"
+                android:textColor="@color/home_fab_item_dark_search"
+                android:textSize="16sp" />
 
         </RelativeLayout>
     </ScrollView>
@@ -256,6 +267,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_shadow_height"
         android:layout_below="@id/iv_friend_info_bg"
-        android:background="@drawable/shadow"/>
+        android:background="@drawable/shadow" />
 </RelativeLayout>
 

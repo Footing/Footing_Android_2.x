@@ -1,8 +1,6 @@
 package team.far.footing.ui.vu;
 
-import java.util.List;
 
-import team.far.footing.model.bean.realmbean.Message;
 import team.far.footing.ui.adaper.MessageAdapter;
 
 /**
@@ -10,9 +8,12 @@ import team.far.footing.ui.adaper.MessageAdapter;
  */
 public interface IMessageVu {
 
-    void  show(MessageAdapter adapter);
+    void show(MessageAdapter adapter);
 
+    void addFriendSucess();
 
+    void addFriendFail(int i, String reason);
 
+    void addFriending();
 
 }

@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import com.easemob.chat.EMMessage;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import butterknife.ButterKnife;
 import team.far.footing.R;
 import team.far.footing.app.BaseActivity;
@@ -37,6 +40,15 @@ public class HomeActivity extends BaseActivity implements IHomeVu {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
+        try {
+            URL url = new URL("www.baidu.com");
+            LogUtils.e(url.getHost());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
         ButterKnife.bind(this);
         if (savedInstanceState == null) {
             setupHomeFragment();

@@ -26,6 +26,7 @@ import team.far.footing.uitl.LogUtils;
  */
 public class FriendModel implements IFriendModel {
 
+    public static final String ADDFRIEND = "SYSTEM_MSG";
     public static final FriendModel instance = new FriendModel();
 
     final public static FriendModel getInstance() {
@@ -44,7 +45,7 @@ public class FriendModel implements IFriendModel {
 
         IMessageModel messageModel = MessageModel.getInstance();
 
-        messageModel.sendTxtMssageToUser(userInfo, "==addfriend==", new OnUserListener() {
+        messageModel.sendTxtMssageToUser(userInfo, ADDFRIEND, new OnUserListener() {
             @Override
             public void Success() {
                 onUserListener.Success();

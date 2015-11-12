@@ -90,6 +90,10 @@
         <activity
             android:name=".ui.activity.MessageActivity"
             android:label="@string/title_activity_message"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.activity.ChatActivity"
+            android:label="@string/title_activity_chat"
             android:theme="@style/AppTheme"></activity>
     </application>
 

@@ -49,9 +49,10 @@ public class HomePresenter {
                                                 switch (emNotifierEvent.getEvent()) {
                                                     case EventNewMessage: // 接收新消息
                                                         mNewMsg = (EMMessage) emNotifierEvent.getData();
-                                                        LogUtils.e("新消息来了");
+                                                        LogUtils.e("新消息来了:"+mNewMsg.getBody().toString());
                                                         //把消息保存到realm
-                                                        mIRealm.setEMMessage(mNewMsg);
+
+                                                        mIRealm.setAddFriendMessage(mNewMsg);
                                                         LogUtils.e("新消息保存了就不做了吗？");
 
                                                         Message message = handler.obtainMessage();
